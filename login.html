@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تسجيل الدخول - Kaza Mix</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-zinc-950 text-zinc-100 min-h-screen flex items-center justify-center relative overflow-hidden selection:bg-amber-500 selection:text-zinc-950">
+
+    <!-- Global Background Video -->
+    <div class="fixed inset-0 z-0 overflow-hidden pointer-events-none opacity-40">
+        <video autoplay muted loop playsinline class="w-full h-full object-cover"><source src="pr.mp4" type="video/mp4"></video>
+        <div class="absolute inset-0 bg-zinc-950/70 backdrop-blur-[2px]"></div>
+    </div>
+
+    <!-- Login Box -->
+    <div class="relative z-10 glass-nav border border-white/10 shadow-2xl rounded-3xl max-w-md w-full p-8 space-y-6 mx-4">
+        <div class="text-center space-y-2">
+            <h1 class="text-3xl font-black bg-gradient-to-r from-amber-400 via-amber-500 to-orange-500 bg-clip-text text-transparent">Kaza Mix</h1>
+            <p class="text-zinc-400 text-xs">سجل دخولك للوصول إلى عالم البرجر الأصلي</p>
+        </div>
+
+        <form onsubmit="handleLogin(event)" class="space-y-4">
+            <div class="space-y-1">
+                <label class="text-xs text-zinc-400 font-semibold">البريد الإلكتروني</label>
+                <input type="email" id="login-email" required placeholder="name@example.com" class="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-3 text-xs text-white outline-none focus:border-amber-500 transition">
+            </div>
+
+            <div class="space-y-1">
+                <label class="text-xs text-zinc-400 font-semibold">كلمة المرور</label>
+                <input type="password" id="login-password" required placeholder="••••••••" class="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-3 text-xs text-white outline-none focus:border-amber-500 transition">
+            </div>
+
+            <button type="submit" class="w-full bg-amber-500 hover:bg-amber-400 text-zinc-950 font-bold py-3.5 rounded-xl cursor-pointer transition shadow-lg shadow-amber-500/20 text-sm">
+                تسجيل الدخول 🚀
+            </button>
+        </form>
+    </div>
+
+    <script>
+        async function handleLogin(e) {
+            e.preventDefault();
+            const email = document.getElementById('login-email').value;
+            
+            // تخزين حالة تسجيل الدخول في المتصفح
+            localStorage.setItem('isLoggedIn', 'true');
+            localStorage.setItem('userEmail', email);
+
+            // التحويل للصفحة الرئيسية فوراً
+            window.location.href = 'index.html';
+        }
+    </script>
+</body>
+</html>

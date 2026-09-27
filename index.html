@@ -1,0 +1,963 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BurgerCraft - مطعم البرجر الأصلي</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts Cairo -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    <!-- Custom CSS File -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-zinc-950 text-zinc-100 min-h-screen flex flex-col justify-between selection:bg-amber-500 selection:text-zinc-950 relative overflow-x-hidden">
+
+    <!-- Custom Mouse Cursor Effect -->
+    <div class="custom-cursor"></div>
+    <div class="custom-cursor-follower"></div>
+
+    <!-- Ambient Glow Gradients -->
+    <div class="fixed inset-0 z-0 overflow-hidden pointer-events-none">
+        <div class="absolute -top-40 -right-40 w-96 h-96 bg-amber-500/20 rounded-full blur-[100px]"></div>
+        <div class="absolute top-1/2 -left-40 w-96 h-96 bg-orange-600/15 rounded-full blur-[120px]"></div>
+    </div>
+
+    <!-- Global Background Video (Optimized for Mobile) -->
+    <div class="fixed inset-0 z-0 overflow-hidden pointer-events-none opacity-40">
+        <video autoplay muted loop playsinline class="w-full h-full object-cover">
+            <source src="pr.mp4" type="video/mp4">
+            متصفحك لا يدعم عرض الفيديو.
+        </video>
+        <div class="absolute inset-0 bg-zinc-950/70 sm:backdrop-blur-[2px]"></div>
+    </div>
+
+    <!-- Header & Navigation -->
+    <div id="floating-logo" class="fixed top-3 right-2 sm:right-8 px-3 sm:px-6 py-1.5 sm:py-3.5 rounded-full bg-zinc-950/80 backdrop-blur-md border border-white/15 shadow-xl z-50 flex items-center gap-1.5 transition-all duration-300">
+        <span class="text-sm sm:text-2xl font-black tracking-wider bg-gradient-to-r from-amber-400 via-amber-500 to-orange-500 bg-clip-text text-transparent">Burger<span class="text-white">Craft</span></span>
+    </div>
+
+    <div class="fixed top-3 left-2 sm:left-8 z-50 flex items-center gap-1 sm:gap-3">
+        <nav class="flex items-center gap-0.5 sm:gap-2 font-medium bg-zinc-950/80 backdrop-blur-md px-1.5 sm:px-3.5 py-1.5 sm:py-3 rounded-full border border-white/15 shadow-xl">
+            <a href="#hero" class="nav-link group flex items-center gap-0 hover:gap-1.5 text-zinc-300 hover:text-amber-400 bg-zinc-900/50 hover:bg-zinc-800/80 px-2 sm:px-3.5 py-1 sm:py-2 rounded-full transition-all duration-300">
+                <i class="fa-solid fa-house text-amber-400 text-xs sm:text-base shrink-0"></i>
+                <span class="max-w-0 opacity-0 overflow-hidden group-hover:max-w-[100px] group-hover:opacity-100 transition-all duration-300 ease-in-out whitespace-nowrap text-[11px] sm:text-sm">الرئيسية</span>
+            </a>
+            <a href="#offers" class="nav-link group flex items-center gap-0 hover:gap-1.5 text-zinc-300 hover:text-amber-400 bg-zinc-900/50 hover:bg-zinc-800/80 px-2 sm:px-3.5 py-1 sm:py-2 rounded-full transition-all duration-300">
+                <i class="fa-solid fa-bolt text-amber-400 text-xs sm:text-base shrink-0"></i>
+                <span class="max-w-0 opacity-0 overflow-hidden group-hover:max-w-[100px] group-hover:opacity-100 transition-all duration-300 ease-in-out whitespace-nowrap text-[11px] sm:text-sm">العروض</span>
+            </a>
+            <a href="#about" class="nav-link group flex items-center gap-0 hover:gap-1.5 text-zinc-300 hover:text-amber-400 bg-zinc-900/50 hover:bg-zinc-800/80 px-2 sm:px-3.5 py-1 sm:py-2 rounded-full transition-all duration-300">
+                <i class="fa-solid fa-book-open text-amber-400 text-xs sm:text-base shrink-0"></i>
+                <span class="max-w-0 opacity-0 overflow-hidden group-hover:max-w-[100px] group-hover:opacity-100 transition-all duration-300 ease-in-out whitespace-nowrap text-[11px] sm:text-sm">قصتنا</span>
+            </a>
+            <a href="#menu" class="nav-link group flex items-center gap-0 hover:gap-1.5 text-zinc-300 hover:text-amber-400 bg-zinc-900/50 hover:bg-zinc-800/80 px-2 sm:px-3.5 py-1 sm:py-2 rounded-full transition-all duration-300">
+                <i class="fa-solid fa-burger text-amber-400 text-xs sm:text-base shrink-0"></i>
+                <span class="max-w-0 opacity-0 overflow-hidden group-hover:max-w-[100px] group-hover:opacity-100 transition-all duration-300 ease-in-out whitespace-nowrap text-[11px] sm:text-sm">المنيو</span>
+            </a>
+            <a href="#reviews" class="nav-link group flex items-center gap-0 hover:gap-1.5 text-zinc-300 hover:text-amber-400 bg-zinc-900/50 hover:bg-zinc-800/80 px-2 sm:px-3.5 py-1 sm:py-2 rounded-full transition-all duration-300">
+                <i class="fa-solid fa-star text-amber-400 text-xs sm:text-base shrink-0"></i>
+                <span class="max-w-0 opacity-0 overflow-hidden group-hover:max-w-[100px] group-hover:opacity-100 transition-all duration-300 ease-in-out whitespace-nowrap text-[11px] sm:text-sm">آراء</span>
+            </a>
+        </nav>
+
+        <button onclick="toggleCart()" class="relative bg-zinc-950/80 backdrop-blur-md border border-white/15 p-2 sm:p-4 rounded-full hover:border-amber-500/80 transition shadow-xl glow-btn shrink-0">
+            <i class="fa-solid fa-cart-shopping text-amber-400 text-xs sm:text-lg"></i>
+            <span id="cart-badge" class="absolute -top-1 -right-1 bg-gradient-to-r from-amber-500 to-orange-500 text-zinc-950 text-[10px] sm:text-xs font-black w-4 h-4 sm:w-5 sm:h-5 rounded-full flex items-center justify-center shadow-md">0</span>
+        </button>
+    </div>
+
+    <!-- Main Content -->
+    <main class="relative z-10 pt-20 sm:pt-28">
+        
+        <!-- Hero Section -->
+        <section id="hero" class="py-12 md:py-28 min-h-[70vh] flex items-center justify-center text-center">
+            <div class="max-w-[916px] mx-auto px-4 sm:px-6 lg:px-8 space-y-4 sm:space-y-6 reveal">
+                <h1 class="text-2xl sm:text-5xl md:text-6xl font-black leading-[1.5] sm:leading-[1.7] py-2 tracking-tight drop-shadow-lg text-white">
+                    طعم البرجر الحقيقي <br>
+                    <span class="block mt-2 sm:mt-4 bg-gradient-to-r from-amber-400 via-amber-500 to-orange-500 bg-clip-text text-transparent pb-2">مش هتلاقيه غير هنا</span>
+                </h1>
+                <p class="text-zinc-300 text-xs sm:text-lg max-w-[596px] mx-auto leading-relaxed drop-shadow">
+                    استمتع بألذ سندوتشات البرجر المشوية على الفحم بصوصاتنا السرية الخاصة والجبنة السائحة التي تذوب في الفم.
+                </p>
+            </div>
+        </section>
+
+        <!-- Offers Section (9 Offers) -->
+        <section id="offers" class="py-12 relative -mt-6 sm:-mt-[60px] z-20 transition-colors duration-500">
+            <div class="max-w-7xl mx-auto px-2.5 sm:px-6 lg:px-8 reveal">
+                <div class="bg-zinc-900/15 backdrop-blur-md border border-white/10 p-3.5 sm:p-12 rounded-[1.5rem] sm:rounded-[2.5rem] shadow-2xl">
+                    <div class="text-center space-y-2 sm:space-y-3 mb-6 sm:mb-12">
+                        <span class="bg-amber-500/20 text-amber-400 px-3 py-1 rounded-full text-xs sm:text-sm font-bold inline-block border border-amber-500/30">عروض لفترة محدودة</span>
+                        <h2 class="text-xl sm:text-4xl font-black text-white">العروض الحصرية والساخنة</h2>
+                        <p class="text-zinc-300 max-w-lg mx-auto text-xs sm:text-base">وجبات متكاملة مشبعة بأقوى الأسعار، اطلبها الآن قبل فوات الأوان.</p>
+                    </div>
+
+                    <div class="grid grid-cols-2 md:grid-cols-3 gap-2.5 sm:gap-8">
+                        <!-- Offer 1 -->
+                        <div onclick="openProductModal('عرض العيلة الحصري', 299, '٣ سندوتش برجر مشوي + طبق بطاطس كبير مع صوصات خاصة.', 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=800&q=80')" class="cursor-pointer relative rounded-xl sm:rounded-3xl overflow-hidden border border-zinc-700/60 shadow-xl group bg-zinc-900/50 hover:border-amber-500/60 transition-all duration-300 flex flex-col justify-between">
+                            <div>
+                                <div class="h-28 sm:h-60 overflow-hidden relative">
+                                    <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=800&q=80" alt="عرض" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                                    <div class="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/40 to-transparent"></div>
+                                    <span class="absolute top-2 right-2 sm:top-4 sm:right-4 bg-gradient-to-r from-amber-500 to-orange-500 text-zinc-950 font-black text-[9px] sm:text-xs px-2 sm:px-3 py-0.5 sm:py-1 rounded-full shadow-lg">وفر 30%</span>
+                                </div>
+                                <div class="p-2.5 sm:p-6 space-y-1 sm:space-y-2">
+                                    <span class="text-amber-400 text-[9px] sm:text-xs font-bold uppercase tracking-wider">العرض الأول</span>
+                                    <h3 class="text-white font-black text-xs sm:text-xl">عرض العيلة الحصري</h3>
+                                    <p class="text-zinc-300 text-[11px] sm:text-sm">٣ سندوتش برجر مشوي + طبق بطاطس كبير.</p>
+                                </div>
+                            </div>
+                            <div class="p-2.5 sm:p-6 pt-0 flex flex-col gap-1.5 sm:flex-row sm:items-center sm:justify-between">
+                                <span class="text-xs sm:text-2xl font-black bg-gradient-to-r from-amber-400 to-orange-400 bg-clip-text text-transparent">٢٩٩ ج.م</span>
+                                <span class="text-xs bg-amber-500/20 text-amber-400 px-3 py-1.5 rounded-xl font-bold">التفاصيل</span>
+                            </div>
+                        </div>
+
+                        <!-- Offer 2 -->
+                        <div onclick="openProductModal('عرض الدابل اللذيذ', 240, '٢ دابل سماش برجر + بطاطس لوديد بالجبنة + كانز.', 'https://images.unsplash.com/photo-1550547660-d9450f859349?auto=format&fit=crop&w=800&q=80')" class="cursor-pointer relative rounded-xl sm:rounded-3xl overflow-hidden border border-zinc-700/60 shadow-xl group bg-zinc-900/50 hover:border-amber-500/60 transition-all duration-300 flex flex-col justify-between">
+                            <div>
+                                <div class="h-28 sm:h-60 overflow-hidden relative">
+                                    <img src="https://images.unsplash.com/photo-1550547660-d9450f859349?auto=format&fit=crop&w=800&q=80" alt="عرض" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                                    <div class="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/40 to-transparent"></div>
+                                    <span class="absolute top-2 right-2 sm:top-4 sm:right-4 bg-gradient-to-r from-amber-500 to-orange-500 text-zinc-950 font-black text-[9px] sm:text-xs px-2 sm:px-3 py-0.5 sm:py-1 rounded-full shadow-lg">الأكثر طلباً</span>
+                                </div>
+                                <div class="p-2.5 sm:p-6 space-y-1 sm:space-y-2">
+                                    <span class="text-amber-400 text-[9px] sm:text-xs font-bold uppercase tracking-wider">العرض الثاني</span>
+                                    <h3 class="text-white font-black text-xs sm:text-xl">عرض الدابل اللذيذ</h3>
+                                    <p class="text-zinc-300 text-[11px] sm:text-sm">٢ دابل سماش برجر + بطاطس لوديد بالجبنة + كانز.</p>
+                                </div>
+                            </div>
+                            <div class="p-2.5 sm:p-6 pt-0 flex flex-col gap-1.5 sm:flex-row sm:items-center sm:justify-between">
+                                <span class="text-xs sm:text-2xl font-black bg-gradient-to-r from-amber-400 to-orange-400 bg-clip-text text-transparent">٢٤٠ ج.م</span>
+                                <span class="text-xs bg-amber-500/20 text-amber-400 px-3 py-1.5 rounded-xl font-bold">التفاصيل</span>
+                            </div>
+                        </div>
+
+                        <!-- Offer 3 -->
+                        <div onclick="openProductModal('عرض السوبر تشيكن', 210, '٢ كريسبي تشيكن برجر حار + بطاطس مقرمشة + صوص خاص.', 'https://images.unsplash.com/photo-1586190848861-99aa4a171e90?auto=format&fit=crop&w=800&q=80')" class="cursor-pointer relative rounded-xl sm:rounded-3xl overflow-hidden border border-zinc-700/60 shadow-xl group bg-zinc-900/50 hover:border-amber-500/60 transition-all duration-300 flex flex-col justify-between">
+                            <div>
+                                <div class="h-28 sm:h-60 overflow-hidden relative">
+                                    <img src="https://images.unsplash.com/photo-1586190848861-99aa4a171e90?auto=format&fit=crop&w=800&q=80" alt="عرض" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                                    <div class="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/40 to-transparent"></div>
+                                    <span class="absolute top-2 right-2 sm:top-4 sm:right-4 bg-gradient-to-r from-amber-500 to-orange-500 text-zinc-950 font-black text-[9px] sm:text-xs px-2 sm:px-3 py-0.5 sm:py-1 rounded-full shadow-lg">حار ومقرمش</span>
+                                </div>
+                                <div class="p-2.5 sm:p-6 space-y-1 sm:space-y-2">
+                                    <span class="text-amber-400 text-[9px] sm:text-xs font-bold uppercase tracking-wider">العرض الثالث</span>
+                                    <h3 class="text-white font-black text-xs sm:text-xl">عرض السوبر تشيكن</h3>
+                                    <p class="text-zinc-300 text-[11px] sm:text-sm">٢ كريسبي تشيكن برجر حار + بطاطس مقرمشة + صوص خاص.</p>
+                                </div>
+                            </div>
+                            <div class="p-2.5 sm:p-6 pt-0 flex flex-col gap-1.5 sm:flex-row sm:items-center sm:justify-between">
+                                <span class="text-xs sm:text-2xl font-black bg-gradient-to-r from-amber-400 to-orange-400 bg-clip-text text-transparent">٢١٠ ج.م</span>
+                                <span class="text-xs bg-amber-500/20 text-amber-400 px-3 py-1.5 rounded-xl font-bold">التفاصيل</span>
+                            </div>
+                        </div>
+
+                        <!-- Offer 4 -->
+                        <div onclick="openProductModal('عرض العزومة الملكية', 380, '٤ سندوتشات تشيز برجر + ٢ بطاطس لوديد + لتر صوصات.', 'https://images.unsplash.com/photo-1551782450-17144efb9c50?auto=format&fit=crop&w=800&q=80')" class="cursor-pointer relative rounded-xl sm:rounded-3xl overflow-hidden border border-zinc-700/60 shadow-xl group bg-zinc-900/50 hover:border-amber-500/60 transition-all duration-300 flex flex-col justify-between">
+                            <div>
+                                <div class="h-28 sm:h-60 overflow-hidden relative">
+                                    <img src="https://images.unsplash.com/photo-1551782450-17144efb9c50?auto=format&fit=crop&w=800&q=80" alt="عرض" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                                    <div class="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/40 to-transparent"></div>
+                                    <span class="absolute top-2 right-2 sm:top-4 sm:right-4 bg-gradient-to-r from-amber-500 to-orange-500 text-zinc-950 font-black text-[9px] sm:text-xs px-2 sm:px-3 py-0.5 sm:py-1 rounded-full shadow-lg">ملكي</span>
+                                </div>
+                                <div class="p-2.5 sm:p-6 space-y-1 sm:space-y-2">
+                                    <span class="text-amber-400 text-[9px] sm:text-xs font-bold uppercase tracking-wider">العرض الرابع</span>
+                                    <h3 class="text-white font-black text-xs sm:text-xl">عرض العزومة الملكية</h3>
+                                    <p class="text-zinc-300 text-[11px] sm:text-sm">٤ سندوتشات تشيز برجر + ٢ بطاطس لوديد + لتر صوصات.</p>
+                                </div>
+                            </div>
+                            <div class="p-2.5 sm:p-6 pt-0 flex flex-col gap-1.5 sm:flex-row sm:items-center sm:justify-between">
+                                <span class="text-xs sm:text-2xl font-black bg-gradient-to-r from-amber-400 to-orange-400 bg-clip-text text-transparent">٣٨٠ ج.م</span>
+                                <span class="text-xs bg-amber-500/20 text-amber-400 px-3 py-1.5 rounded-xl font-bold">التفاصيل</span>
+                            </div>
+                        </div>
+
+                        <!-- Offer 5 -->
+                        <div onclick="openProductModal('عرض الطاسة الساخنة', 185, 'ميني برجر مشوي + حلقات بصل مقرمشة + بيبسي.', 'https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=800&q=80')" class="cursor-pointer relative rounded-xl sm:rounded-3xl overflow-hidden border border-zinc-700/60 shadow-xl group bg-zinc-900/50 hover:border-amber-500/60 transition-all duration-300 flex flex-col justify-between">
+                            <div>
+                                <div class="h-28 sm:h-60 overflow-hidden relative">
+                                    <img src="https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=800&q=80" alt="عرض" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                                    <div class="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/40 to-transparent"></div>
+                                    <span class="absolute top-2 right-2 sm:top-4 sm:right-4 bg-gradient-to-r from-amber-500 to-orange-500 text-zinc-950 font-black text-[9px] sm:text-xs px-2 sm:px-3 py-0.5 sm:py-1 rounded-full shadow-lg">جديد</span>
+                                </div>
+                                <div class="p-2.5 sm:p-6 space-y-1 sm:space-y-2">
+                                    <span class="text-amber-400 text-[9px] sm:text-xs font-bold uppercase tracking-wider">العرض الخامس</span>
+                                    <h3 class="text-white font-black text-xs sm:text-xl">عرض الطاسة الساخنة</h3>
+                                    <p class="text-zinc-300 text-[11px] sm:text-sm">ميني برجر مشوي + حلقات بصل مقرمشة + بيبسي.</p>
+                                </div>
+                            </div>
+                            <div class="p-2.5 sm:p-6 pt-0 flex flex-col gap-1.5 sm:flex-row sm:items-center sm:justify-between">
+                                <span class="text-xs sm:text-2xl font-black bg-gradient-to-r from-amber-400 to-orange-400 bg-clip-text text-transparent">١٨٥ ج.م</span>
+                                <span class="text-xs bg-amber-500/20 text-amber-400 px-3 py-1.5 rounded-xl font-bold">التفاصيل</span>
+                            </div>
+                        </div>
+
+                        <!-- Offer 6 -->
+                        <div onclick="openProductModal('عرض الثلاثي الناري', 275, '٣ كريسبي تشيكن حار جداً + جبنة مندي + بطاطس.', 'https://images.unsplash.com/photo-1625813506062-0aeb1d7a094b?auto=format&fit=crop&w=800&q=80')" class="cursor-pointer relative rounded-xl sm:rounded-3xl overflow-hidden border border-zinc-700/60 shadow-xl group bg-zinc-900/50 hover:border-amber-500/60 transition-all duration-300 flex flex-col justify-between">
+                            <div>
+                                <div class="h-28 sm:h-60 overflow-hidden relative">
+                                    <img src="https://images.unsplash.com/photo-1625813506062-0aeb1d7a094b?auto=format&fit=crop&w=800&q=80" alt="عرض" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                                    <div class="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/40 to-transparent"></div>
+                                    <span class="absolute top-2 right-2 sm:top-4 sm:right-4 bg-gradient-to-r from-amber-500 to-orange-500 text-zinc-950 font-black text-[9px] sm:text-xs px-2 sm:px-3 py-0.5 sm:py-1 rounded-full shadow-lg">حراق نار</span>
+                                </div>
+                                <div class="p-2.5 sm:p-6 space-y-1 sm:space-y-2">
+                                    <span class="text-amber-400 text-[9px] sm:text-xs font-bold uppercase tracking-wider">العرض السادس</span>
+                                    <h3 class="text-white font-black text-xs sm:text-xl">عرض الثلاثي الناري</h3>
+                                    <p class="text-zinc-300 text-[11px] sm:text-sm">٣ كريسبي تشيكن حار جداً + جبنة مندي + بطاطس.</p>
+                                </div>
+                            </div>
+                            <div class="p-2.5 sm:p-6 pt-0 flex flex-col gap-1.5 sm:flex-row sm:items-center sm:justify-between">
+                                <span class="text-xs sm:text-2xl font-black bg-gradient-to-r from-amber-400 to-orange-400 bg-clip-text text-transparent">٢٧٥ ج.م</span>
+                                <span class="text-xs bg-amber-500/20 text-amber-400 px-3 py-1.5 rounded-xl font-bold">التفاصيل</span>
+                            </div>
+                        </div>
+
+                        <!-- Offer 7 -->
+                        <div onclick="openProductModal('عرض الصحاب السهران', 499, '٥ سندوتشات برجر متنوعة + طبقين بطاطس + صوصات.', 'https://images.unsplash.com/photo-1550317138-10000687a72b?auto=format&fit=crop&w=800&q=80')" class="cursor-pointer relative rounded-xl sm:rounded-3xl overflow-hidden border border-zinc-700/60 shadow-xl group bg-zinc-900/50 hover:border-amber-500/60 transition-all duration-300 flex flex-col justify-between">
+                            <div>
+                                <div class="h-28 sm:h-60 overflow-hidden relative">
+                                    <img src="https://images.unsplash.com/photo-1550317138-10000687a72b?auto=format&fit=crop&w=800&q=80" alt="عرض" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                                    <div class="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/40 to-transparent"></div>
+                                    <span class="absolute top-2 right-2 sm:top-4 sm:right-4 bg-gradient-to-r from-amber-500 to-orange-500 text-zinc-950 font-black text-[9px] sm:text-xs px-2 sm:px-3 py-0.5 sm:py-1 rounded-full shadow-lg">توفير كبير</span>
+                                </div>
+                                <div class="p-2.5 sm:p-6 space-y-1 sm:space-y-2">
+                                    <span class="text-amber-400 text-[9px] sm:text-xs font-bold uppercase tracking-wider">العرض السابع</span>
+                                    <h3 class="text-white font-black text-xs sm:text-xl">عرض الصحاب السهران</h3>
+                                    <p class="text-zinc-300 text-[11px] sm:text-sm">٥ سندوتشات برجر متنوعة + طبقين بطاطس + صوصات.</p>
+                                </div>
+                            </div>
+                            <div class="p-2.5 sm:p-6 pt-0 flex flex-col gap-1.5 sm:flex-row sm:items-center sm:justify-between">
+                                <span class="text-xs sm:text-2xl font-black bg-gradient-to-r from-amber-400 to-orange-400 bg-clip-text text-transparent">٤٩٩ ج.م</span>
+                                <span class="text-xs bg-amber-500/20 text-amber-400 px-3 py-1.5 rounded-xl font-bold">التفاصيل</span>
+                            </div>
+                        </div>
+
+                        <!-- Offer 8 -->
+                        <div onclick="openProductModal('عرض الكومبو الاقتصادي', 120, 'سندوتش سماش + بطاطس صغيرة + مشروب غازي.', 'https://images.unsplash.com/photo-1594212699903-ec8a3eca50f5?auto=format&fit=crop&w=800&q=80')" class="cursor-pointer relative rounded-xl sm:rounded-3xl overflow-hidden border border-zinc-700/60 shadow-xl group bg-zinc-900/50 hover:border-amber-500/60 transition-all duration-300 flex flex-col justify-between">
+                            <div>
+                                <div class="h-28 sm:h-60 overflow-hidden relative">
+                                    <img src="https://images.unsplash.com/photo-1594212699903-ec8a3eca50f5?auto=format&fit=crop&w=800&q=80" alt="عرض" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                                    <div class="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/40 to-transparent"></div>
+                                    <span class="absolute top-2 right-2 sm:top-4 sm:right-4 bg-gradient-to-r from-amber-500 to-orange-500 text-zinc-950 font-black text-[9px] sm:text-xs px-2 sm:px-3 py-0.5 sm:py-1 rounded-full shadow-lg">اقتصادي</span>
+                                </div>
+                                <div class="p-2.5 sm:p-6 space-y-1 sm:space-y-2">
+                                    <span class="text-amber-400 text-[9px] sm:text-xs font-bold uppercase tracking-wider">العرض الثامن</span>
+                                    <h3 class="text-white font-black text-xs sm:text-xl">عرض الكومبو الاقتصادي</h3>
+                                    <p class="text-zinc-300 text-[11px] sm:text-sm">سندوتش سماش + بطاطس صغيرة + مشروب غازي.</p>
+                                </div>
+                            </div>
+                            <div class="p-2.5 sm:p-6 pt-0 flex flex-col gap-1.5 sm:flex-row sm:items-center sm:justify-between">
+                                <span class="text-xs sm:text-2xl font-black bg-gradient-to-r from-amber-400 to-orange-400 bg-clip-text text-transparent">١٢٠ ج.م</span>
+                                <span class="text-xs bg-amber-500/20 text-amber-400 px-3 py-1.5 rounded-xl font-bold">التفاصيل</span>
+                            </div>
+                        </div>
+
+                        <!-- Offer 9 -->
+                        <div onclick="openProductModal('عرض الجبنة المجنونة', 195, 'دابل برجر مغطى بأنهار الجبنة الشيدر السايحة والباكون.', 'https://images.unsplash.com/photo-1571091718767-18b5b1457add?auto=format&fit=crop&w=800&q=80')" class="cursor-pointer relative rounded-xl sm:rounded-3xl overflow-hidden border border-zinc-700/60 shadow-xl group bg-zinc-900/50 hover:border-amber-500/60 transition-all duration-300 flex flex-col justify-between">
+                            <div>
+                                <div class="h-28 sm:h-60 overflow-hidden relative">
+                                    <img src="https://images.unsplash.com/photo-1571091718767-18b5b1457add?auto=format&fit=crop&w=800&q=80" alt="عرض" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+                                    <div class="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/40 to-transparent"></div>
+                                    <span class="absolute top-2 right-2 sm:top-4 sm:right-4 bg-gradient-to-r from-amber-500 to-orange-500 text-zinc-950 font-black text-[9px] sm:text-xs px-2 sm:px-3 py-0.5 sm:py-1 rounded-full shadow-lg">جبنة مضاعفة</span>
+                                </div>
+                                <div class="p-2.5 sm:p-6 space-y-1 sm:space-y-2">
+                                    <span class="text-amber-400 text-[9px] sm:text-xs font-bold uppercase tracking-wider">العرض التاسع</span>
+                                    <h3 class="text-white font-black text-xs sm:text-xl">عرض الجبنة المجنونة</h3>
+                                    <p class="text-zinc-300 text-[11px] sm:text-sm">دابل برجر مغطى بأنهار الجبنة الشيدر السايحة والباكون.</p>
+                                </div>
+                            </div>
+                            <div class="p-2.5 sm:p-6 pt-0 flex flex-col gap-1.5 sm:flex-row sm:items-center sm:justify-between">
+                                <span class="text-xs sm:text-2xl font-black bg-gradient-to-r from-amber-400 to-orange-400 bg-clip-text text-transparent">١٩٥ ج.م</span>
+                                <span class="text-xs bg-amber-500/20 text-amber-400 px-3 py-1.5 rounded-xl font-bold">التفاصيل</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Us Section -->
+        <section id="about" class="py-12 transition-colors duration-500">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 reveal">
+                <div class="bg-zinc-900/40 backdrop-blur-md border border-zinc-800/80 p-5 sm:p-12 rounded-3xl shadow-xl grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-center relative overflow-hidden group">
+                    <div class="space-y-4 sm:space-y-6 relative z-10">
+                        <span class="bg-amber-500/20 text-amber-400 px-4 py-2 rounded-full text-xs sm:text-sm font-bold inline-block border border-amber-500/30">سر الصنعة</span>
+                        <h2 class="text-2xl sm:text-5xl font-black leading-tight text-white">ليه الناس بتبعت وتقول ده أحسن برجر أكلناه؟</h2>
+                        <p class="text-zinc-300 text-xs sm:text-lg leading-relaxed">إحنا مش بنعمل برجر وبس، إحنا بنصنع تجربة. اللحمة بتاعتنا بتجيلنا طازة يومياً من مزارع موثوقة، والعيش بنخبزه طازة في مطبخنا كل صباح بخلطة الزبدة الخاصة بينا.</p>
+                    </div>
+                    <div class="relative z-10">
+                        <img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=800&q=80" alt="مطبخنا" class="rounded-3xl shadow-xl object-cover h-[250px] sm:h-[420px] w-full border border-zinc-700/60">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Menu Section (All 21 Items) -->
+        <section id="menu" class="py-12 transition-colors duration-500">
+            <div class="max-w-7xl mx-auto px-2.5 sm:px-6 lg:px-8 reveal">
+                <div class="bg-zinc-900/15 backdrop-blur-md border border-white/10 p-3.5 sm:p-12 rounded-[1.5rem] sm:rounded-[2.5rem] shadow-2xl">
+                    <div class="text-center space-y-3 sm:space-y-4 mb-8 sm:mb-16">
+                        <span class="bg-amber-500/20 text-amber-400 px-3.5 py-1.5 rounded-full text-xs sm:text-sm font-bold inline-block border border-amber-500/30">منيو متكامل</span>
+                        <h2 class="text-xl sm:text-4xl font-black text-white">قائمة الأطعمة والمنتجات الشهية (21 صنف)</h2>
+                        <p class="text-zinc-300 max-w-lg mx-auto text-xs sm:text-base">اختر وجبتك المفضلة من تشكيلتنا الواسعة ودع باقي المهمة علينا.</p>
+                        
+                        <div class="pt-2 flex justify-center">
+                            <button id="download-pdf-btn" onclick="triggerDownload()" class="relative overflow-hidden bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-bold px-6 sm:px-8 py-3 sm:py-4 rounded-2xl shadow-xl transition-all duration-300 flex items-center gap-2.5 sm:gap-3 group border border-purple-400/30 cursor-pointer text-xs sm:text-base">
+                                <i id="dl-icon" class="fa-solid fa-download"></i>
+                                <span id="dl-text">تحميل المنيو PDF</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div id="menu-grid" class="grid grid-cols-2 lg:grid-cols-3 gap-2.5 sm:gap-8">
+                        <!-- Item 1 -->
+                        <div onclick="openProductModal('دابل سماش برجر', 160, 'قطعتين لحم بقرى طازج، جبنة أمريكي مزدوجة، صوص كرافت الخاص بالبابريكا.', 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=600&q=80')" class="cursor-pointer menu-item burger bg-zinc-900/60 backdrop-blur-md border border-zinc-800/80 rounded-xl sm:rounded-3xl overflow-hidden hover:border-amber-500/50 transition-all duration-300 flex flex-col justify-between group">
+                            <div>
+                                <div class="h-28 sm:h-52 overflow-hidden relative">
+                                    <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=600&q=80" alt="برجر" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
+                                    <span class="absolute top-2 right-2 sm:top-4 sm:right-4 bg-gradient-to-r from-amber-500 to-orange-500 text-zinc-950 font-extrabold text-[9px] sm:text-xs px-2 sm:px-3 py-0.5 sm:py-1 rounded-full shadow-lg">الأكثر مبيعاً</span>
+                                </div>
+                                <div class="p-2.5 sm:p-6 space-y-1 sm:space-y-3">
+                                    <h3 class="text-xs sm:text-xl font-bold text-white group-hover:text-amber-400 transition">١. دابل سماش برجر</h3>
+                                    <p class="text-zinc-300 text-[11px] sm:text-sm">قطعتين لحم بقرى طازج، جبنة أمريكي مزدوجة، صوص كرافت.</p>
+                                </div>
+                            </div>
+                            <div class="p-2.5 sm:p-6 pt-0 flex flex-col gap-1.5 sm:flex-row sm:items-center sm:justify-between">
+                                <span class="text-xs sm:text-2xl font-black bg-gradient-to-r from-amber-400 to-orange-400 bg-clip-text text-transparent">١60 ج.م</span>
+                                <span class="text-xs bg-amber-500/20 text-amber-400 px-3 py-1.5 rounded-xl font-bold">التفاصيل</span>
+                            </div>
+                        </div>
+
+                        <!-- Item 2 -->
+                        <div onclick="openProductModal('كريسبي تشيكن برجر', 145, 'صدور دجاج مقرمشة حارة، صوص المايونيز الحار، خس طازج وجبنة شيدر.', 'https://images.unsplash.com/photo-1586190848861-99aa4a171e90?auto=format&fit=crop&w=600&q=80')" class="cursor-pointer menu-item burger bg-zinc-900/60 backdrop-blur-md border border-zinc-800/80 rounded-xl sm:rounded-3xl overflow-hidden hover:border-amber-500/50 transition-all duration-300 flex flex-col justify-between group">
+                            <div>
+                                <div class="h-28 sm:h-52 overflow-hidden relative">
+                                    <img src="https://images.unsplash.com/photo-1586190848861-99aa4a171e90?auto=format&fit=crop&w=600&q=80" alt="برجر" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
+                                </div>
+                                <div class="p-2.5 sm:p-6 space-y-1 sm:space-y-3">
+                                    <h3 class="text-xs sm:text-xl font-bold text-white group-hover:text-amber-400 transition">٢. كريسبي تشيكن برجر</h3>
+                                    <p class="text-zinc-300 text-[11px] sm:text-sm">صدور دجاج مقرمشة حارة، صوص المايونيز الحار، خس وجبنة شيدر.</p>
+                                </div>
+                            </div>
+                            <div class="p-2.5 sm:p-6 pt-0 flex flex-col gap-1.5 sm:flex-row sm:items-center sm:justify-between">
+                                <span class="text-xs sm:text-2xl font-black bg-gradient-to-r from-amber-400 to-orange-400 bg-clip-text text-transparent">١٤5 ج.م</span>
+                                <span class="text-xs bg-amber-500/20 text-amber-400 px-3 py-1.5 rounded-xl font-bold">التفاصيل</span>
+                            </div>
+                        </div>
+
+                        <!-- Item 3 -->
+                        <div onclick="openProductModal('لوديد فرايز بالجبنة', 75, 'بطاطس مقرمشة مغطاة بصوص الجبنة السائحة وقطع البيكون المقرمش.', 'https://images.unsplash.com/photo-1573080496219-bb080dd4f877?auto=format&fit=crop&w=600&q=80')" class="cursor-pointer menu-item sides bg-zinc-900/60 backdrop-blur-md border border-zinc-800/80 rounded-xl sm:rounded-3xl overflow-hidden hover:border-amber-500/50 transition-all duration-300 flex flex-col justify-between group">
+                            <div>
+                                <div class="h-28 sm:h-52 overflow-hidden relative">
+                                    <img src="https://images.unsplash.com/photo-1573080496219-bb080dd4f877?auto=format&fit=crop&w=600&q=80" alt="بطاطس" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
+                                </div>
+                                <div class="p-2.5 sm:p-6 space-y-1 sm:space-y-3">
+                                    <h3 class="text-xs sm:text-xl font-bold text-white group-hover:text-amber-400 transition">٣. لوديد فرايز بالجبنة</h3>
+                                    <p class="text-zinc-300 text-[11px] sm:text-sm">بطاطس مقرمشة مغطاة بصوص الجبنة السائحة وقطع البيكون.</p>
+                                </div>
+                            </div>
+                            <div class="p-2.5 sm:p-6 pt-0 flex flex-col gap-1.5 sm:flex-row sm:items-center sm:justify-between">
+                                <span class="text-xs sm:text-2xl font-black bg-gradient-to-r from-amber-400 to-orange-400 bg-clip-text text-transparent">٧5 ج.م</span>
+                                <span class="text-xs bg-amber-500/20 text-amber-400 px-3 py-1.5 rounded-xl font-bold">التفاصيل</span>
+                            </div>
+                        </div>
+
+                        <!-- Item 4 -->
+                        <div onclick="openProductModal('تريبل كرافت برجر', 190, 'ثلاث طبقات لحم بقرى مشوي، جبنة شيدر مدخنة وصوص خاص.', 'https://images.unsplash.com/photo-1550547660-d9450f859349?auto=format&fit=crop&w=600&q=80')" class="cursor-pointer menu-item burger bg-zinc-900/60 backdrop-blur-md border border-zinc-800/80 rounded-xl sm:rounded-3xl overflow-hidden hover:border-amber-500/50 transition-all duration-300 flex flex-col justify-between group">
+                            <div>
+                                <div class="h-28 sm:h-52 overflow-hidden relative">
+                                    <img src="https://images.unsplash.com/photo-1550547660-d9450f859349?auto=format&fit=crop&w=600&q=80" alt="برجر" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
+                                </div>
+                                <div class="p-2.5 sm:p-6 space-y-1 sm:space-y-3">
+                                    <h3 class="text-xs sm:text-xl font-bold text-white group-hover:text-amber-400 transition">٤. تريبل كرافت برجر</h3>
+                                    <p class="text-zinc-300 text-[11px] sm:text-sm">ثلاث طبقات لحم بقرى مشوي، جبنة شيدر مدخنة وصوص خاص.</p>
+                                </div>
+                            </div>
+                            <div class="p-2.5 sm:p-6 pt-0 flex flex-col gap-1.5 sm:flex-row sm:items-center sm:justify-between">
+                                <span class="text-xs sm:text-2xl font-black bg-gradient-to-r from-amber-400 to-orange-400 bg-clip-text text-transparent">١٩٠ ج.م</span>
+                                <span class="text-xs bg-amber-500/20 text-amber-400 px-3 py-1.5 rounded-xl font-bold">التفاصيل</span>
+                            </div>
+                        </div>
+
+                        <!-- Item 5 -->
+                        <div onclick="openProductModal('بيكون سماش برجر', 175, 'قطعتين لحم مع شرائح الباكون المقرمش وصوص الباربكيو.', 'https://images.unsplash.com/photo-1594212699903-ec8a3eca50f5?auto=format&fit=crop&w=600&q=80')" class="cursor-pointer menu-item burger bg-zinc-900/60 backdrop-blur-md border border-zinc-800/80 rounded-xl sm:rounded-3xl overflow-hidden hover:border-amber-500/50 transition-all duration-300 flex flex-col justify-between group">
+                            <div>
+                                <div class="h-28 sm:h-52 overflow-hidden relative">
+                                    <img src="https://images.unsplash.com/photo-1594212699903-ec8a3eca50f5?auto=format&fit=crop&w=600&q=80" alt="برجر" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
+                                </div>
+                                <div class="p-2.5 sm:p-6 space-y-1 sm:space-y-3">
+                                    <h3 class="text-xs sm:text-xl font-bold text-white group-hover:text-amber-400 transition">٥. بيكون سماش برجر</h3>
+                                    <p class="text-zinc-300 text-[11px] sm:text-sm">قطعتين لحم مع شرائح الباكون المقرمش وصوص الباربكيو.</p>
+                                </div>
+                            </div>
+                            <div class="p-2.5 sm:p-6 pt-0 flex flex-col gap-1.5 sm:flex-row sm:items-center sm:justify-between">
+                                <span class="text-xs sm:text-2xl font-black bg-gradient-to-r from-amber-400 to-orange-400 bg-clip-text text-transparent">١٧٥ ج.م</span>
+                                <span class="text-xs bg-amber-500/20 text-amber-400 px-3 py-1.5 rounded-xl font-bold">التفاصيل</span>
+                            </div>
+                        </div>
+
+                        <!-- Item 6 -->
+                        <div onclick="openProductModal('تشيز برجر كلاسيك', 130, 'قطعة لحم بقرى صافي، شريحة جبنة شيدر، مخلل وكاتشب.', 'https://images.unsplash.com/photo-1551782450-17144efb9c50?auto=format&fit=crop&w=600&q=80')" class="cursor-pointer menu-item burger bg-zinc-900/60 backdrop-blur-md border border-zinc-800/80 rounded-xl sm:rounded-3xl overflow-hidden hover:border-amber-500/50 transition-all duration-300 flex flex-col justify-between group">
+                            <div>
+                                <div class="h-28 sm:h-52 overflow-hidden relative">
+                                    <img src="https://images.unsplash.com/photo-1551782450-17144efb9c50?auto=format&fit=crop&w=600&q=80" alt="برجر" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
+                                </div>
+                                <div class="p-2.5 sm:p-6 space-y-1 sm:space-y-3">
+                                    <h3 class="text-xs sm:text-xl font-bold text-white group-hover:text-amber-400 transition">٦. تشيز برجر كلاسيك</h3>
+                                    <p class="text-zinc-300 text-[11px] sm:text-sm">قطعة لحم بقرى صافي، شريحة جبنة شيدر، مخلل وكاتشب.</p>
+                                </div>
+                            </div>
+                            <div class="p-2.5 sm:p-6 pt-0 flex flex-col gap-1.5 sm:flex-row sm:items-center sm:justify-between">
+                                <span class="text-xs sm:text-2xl font-black bg-gradient-to-r from-amber-400 to-orange-400 bg-clip-text text-transparent">١٣٠ ج.م</span>
+                                <span class="text-xs bg-amber-500/20 text-amber-400 px-3 py-1.5 rounded-xl font-bold">التفاصيل</span>
+                            </div>
+                        </div>
+
+                        <!-- Item 7 -->
+                        <div onclick="openProductModal('ميكسد جريل برجر', 185, 'قطعة لحم ودجاج مشوي معاً بخلطة البهارات المدخنة.', 'https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=600&q=80')" class="cursor-pointer menu-item burger bg-zinc-900/60 backdrop-blur-md border border-zinc-800/80 rounded-xl sm:rounded-3xl overflow-hidden hover:border-amber-500/50 transition-all duration-300 flex flex-col justify-between group">
+                            <div>
+                                <div class="h-28 sm:h-52 overflow-hidden relative">
+                                    <img src="https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=600&q=80" alt="برجر" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
+                                </div>
+                                <div class="p-2.5 sm:p-6 space-y-1 sm:space-y-3">
+                                    <h3 class="text-xs sm:text-xl font-bold text-white group-hover:text-amber-400 transition">٧. ميكسد جريل برجر</h3>
+                                    <p class="text-zinc-300 text-[11px] sm:text-sm">قطعة لحم ودجاج مشوي معاً بخلطة البهارات المدخنة.</p>
+                                </div>
+                            </div>
+                            <div class="p-2.5 sm:p-6 pt-0 flex flex-col gap-1.5 sm:flex-row sm:items-center sm:justify-between">
+                                <span class="text-xs sm:text-2xl font-black bg-gradient-to-r from-amber-400 to-orange-400 bg-clip-text text-transparent">١٨٥ ج.م</span>
+                                <span class="text-xs bg-amber-500/20 text-amber-400 px-3 py-1.5 rounded-xl font-bold">التفاصيل</span>
+                            </div>
+                        </div>
+
+                        <!-- Item 8 -->
+                        <div onclick="openProductModal('سبايسي هالبينو برجر', 155, 'لحم مشوي، شرائح هالبينو حارة، صوص الشيلي وصوص الجبنة.', 'https://images.unsplash.com/photo-1625813506062-0aeb1d7a094b?auto=format&fit=crop&w=600&q=80')" class="cursor-pointer menu-item burger bg-zinc-900/60 backdrop-blur-md border border-zinc-800/80 rounded-xl sm:rounded-3xl overflow-hidden hover:border-amber-500/50 transition-all duration-300 flex flex-col justify-between group">
+                            <div>
+                                <div class="h-28 sm:h-52 overflow-hidden relative">
+                                    <img src="https://images.unsplash.com/photo-1625813506062-0aeb1d7a094b?auto=format&fit=crop&w=600&q=80" alt="برجر" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
+                                </div>
+                                <div class="p-2.5 sm:p-6 space-y-1 sm:space-y-3">
+                                    <h3 class="text-xs sm:text-xl font-bold text-white group-hover:text-amber-400 transition">٨. سبايسي هالبينو برجر</h3>
+                                    <p class="text-zinc-300 text-[11px] sm:text-sm">لحم مشوي، شرائح هالبينو حارة، صوص الشيلي وصوص الجبنة.</p>
+                                </div>
+                            </div>
+                            <div class="p-2.5 sm:p-6 pt-0 flex flex-col gap-1.5 sm:flex-row sm:items-center sm:justify-between">
+                                <span class="text-xs sm:text-2xl font-black bg-gradient-to-r from-amber-400 to-orange-400 bg-clip-text text-transparent">١٥٥ ج.م</span>
+                                <span class="text-xs bg-amber-500/20 text-amber-400 px-3 py-1.5 rounded-xl font-bold">التفاصيل</span>
+                            </div>
+                        </div>
+
+                        <!-- Item 9 -->
+                        <div onclick="openProductModal('مشوي فحم سوبر برجر', 165, 'برجر لحم مشوي على الفحم الحقيقي ببرجر صوص مدخن.', 'https://images.unsplash.com/photo-1550317138-10000687a72b?auto=format&fit=crop&w=600&q=80')" class="cursor-pointer menu-item burger bg-zinc-900/60 backdrop-blur-md border border-zinc-800/80 rounded-xl sm:rounded-3xl overflow-hidden hover:border-amber-500/50 transition-all duration-300 flex flex-col justify-between group">
+                            <div>
+                                <div class="h-28 sm:h-52 overflow-hidden relative">
+                                    <img src="https://images.unsplash.com/photo-1550317138-10000687a72b?auto=format&fit=crop&w=600&q=80" alt="برجر" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
+                                </div>
+                                <div class="p-2.5 sm:p-6 space-y-1 sm:space-y-3">
+                                    <h3 class="text-xs sm:text-xl font-bold text-white group-hover:text-amber-400 transition">٩. مشوي فحم سوبر برجر</h3>
+                                    <p class="text-zinc-300 text-[11px] sm:text-sm">برجر لحم مشوي على الفحم الحقيقي ببرجر صوص مدخن.</p>
+                                </div>
+                            </div>
+                            <div class="p-2.5 sm:p-6 pt-0 flex flex-col gap-1.5 sm:flex-row sm:items-center sm:justify-between">
+                                <span class="text-xs sm:text-2xl font-black bg-gradient-to-r from-amber-400 to-orange-400 bg-clip-text text-transparent">١٦٥ ج.م</span>
+                                <span class="text-xs bg-amber-500/20 text-amber-400 px-3 py-1.5 rounded-xl font-bold">التفاصيل</span>
+                            </div>
+                        </div>
+
+                        <!-- Item 10 -->
+                        <div onclick="openProductModal('تشيكن رانش برجر', 140, 'صدور دجاج كريسبي مع صوص الرانش الغني والخس الأمريكي.', 'https://images.unsplash.com/photo-1615870216519-2f9fa575fa5c?auto=format&fit=crop&w=600&q=80')" class="cursor-pointer menu-item burger bg-zinc-900/60 backdrop-blur-md border border-zinc-800/80 rounded-xl sm:rounded-3xl overflow-hidden hover:border-amber-500/50 transition-all duration-300 flex flex-col justify-between group">
+                            <div>
+                                <div class="h-28 sm:h-52 overflow-hidden relative">
+                                    <img src="https://images.unsplash.com/photo-1615870216519-2f9fa575fa5c?auto=format&fit=crop&w=600&q=80" alt="برجر" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
+                                </div>
+                                <div class="p-2.5 sm:p-6 space-y-1 sm:space-y-3">
+                                    <h3 class="text-xs sm:text-xl font-bold text-white group-hover:text-amber-400 transition">١٠. تشيكن رانش برجر</h3>
+                                    <p class="text-zinc-300 text-[11px] sm:text-sm">صدور دجاج كريسبي مع صوص الرانش الغني والخس الأمريكي.</p>
+                                </div>
+                            </div>
+                            <div class="p-2.5 sm:p-6 pt-0 flex flex-col gap-1.5 sm:flex-row sm:items-center sm:justify-between">
+                                <span class="text-xs sm:text-2xl font-black bg-gradient-to-r from-amber-400 to-orange-400 bg-clip-text text-transparent">١٤٠ ج.م</span>
+                                <span class="text-xs bg-amber-500/20 text-amber-400 px-3 py-1.5 rounded-xl font-bold">التفاصيل</span>
+                            </div>
+                        </div>
+
+                        <!-- Item 11 -->
+                        <div onclick="openProductModal('بوفالو تشيكن برجر', 150, 'دجاج مقرمش مغطى بصوص البوفالو الحار وصوص الرانش.', 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=600&q=80')" class="cursor-pointer menu-item burger bg-zinc-900/60 backdrop-blur-md border border-zinc-800/80 rounded-xl sm:rounded-3xl overflow-hidden hover:border-amber-500/50 transition-all duration-300 flex flex-col justify-between group">
+                            <div>
+                                <div class="h-28 sm:h-52 overflow-hidden relative">
+                                    <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=600&q=80" alt="برجر" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
+                                </div>
+                                <div class="p-2.5 sm:p-6 space-y-1 sm:space-y-3">
+                                    <h3 class="text-xs sm:text-xl font-bold text-white group-hover:text-amber-400 transition">١١. بوفالو تشيكن برجر</h3>
+                                    <p class="text-zinc-300 text-[11px] sm:text-sm">دجاج مقرمش مغطى بصوص البوفالو الحار وصوص الرانش.</p>
+                                </div>
+                            </div>
+                            <div class="p-2.5 sm:p-6 pt-0 flex flex-col gap-1.5 sm:flex-row sm:items-center sm:justify-between">
+                                <span class="text-xs sm:text-2xl font-black bg-gradient-to-r from-amber-400 to-orange-400 bg-clip-text text-transparent">١٥٠ ج.م</span>
+                                <span class="text-xs bg-amber-500/20 text-amber-400 px-3 py-1.5 rounded-xl font-bold">التفاصيل</span>
+                            </div>
+                        </div>
+
+                        <!-- Item 12 -->
+                        <div onclick="openProductModal('جراند ماشروم برجر', 180, 'لحم بقرى، صوص المشروم الساخن والجبنة السويسرية الذائبة.', 'https://images.unsplash.com/photo-1550547660-d9450f859349?auto=format&fit=crop&w=600&q=80')" class="cursor-pointer menu-item burger bg-zinc-900/60 backdrop-blur-md border border-zinc-800/80 rounded-xl sm:rounded-3xl overflow-hidden hover:border-amber-500/50 transition-all duration-300 flex flex-col justify-between group">
+                            <div>
+                                <div class="h-28 sm:h-52 overflow-hidden relative">
+                                    <img src="https://images.unsplash.com/photo-1550547660-d9450f859349?auto=format&fit=crop&w=600&q=80" alt="برجر" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
+                                </div>
+                                <div class="p-2.5 sm:p-6 space-y-1 sm:space-y-3">
+                                    <h3 class="text-xs sm:text-xl font-bold text-white group-hover:text-amber-400 transition">١٢. جراند ماشروم برجر</h3>
+                                    <p class="text-zinc-300 text-[11px] sm:text-sm">لحم بقرى، صوص المشروم الساخن والجبنة السويسرية الذائبة.</p>
+                                </div>
+                            </div>
+                            <div class="p-2.5 sm:p-6 pt-0 flex flex-col gap-1.5 sm:flex-row sm:items-center sm:justify-between">
+                                <span class="text-xs sm:text-2xl font-black bg-gradient-to-r from-amber-400 to-orange-400 bg-clip-text text-transparent">١٨٠ ج.م</span>
+                                <span class="text-xs bg-amber-500/20 text-amber-400 px-3 py-1.5 rounded-xl font-bold">التفاصيل</span>
+                            </div>
+                        </div>
+
+                        <!-- Item 13 -->
+                        <div onclick="openProductModal('بطاطس كرسبي بالبهارات', 55, 'طبق بطاطس مقرمشة متبلة بخلطة البهارات الخاصة.', 'https://images.unsplash.com/photo-1573080496219-bb080dd4f877?auto=format&fit=crop&w=600&q=80')" class="cursor-pointer menu-item sides bg-zinc-900/60 backdrop-blur-md border border-zinc-800/80 rounded-xl sm:rounded-3xl overflow-hidden hover:border-amber-500/50 transition-all duration-300 flex flex-col justify-between group">
+                            <div>
+                                <div class="h-28 sm:h-52 overflow-hidden relative">
+                                    <img src="https://images.unsplash.com/photo-1573080496219-bb080dd4f877?auto=format&fit=crop&w=600&q=80" alt="بطاطس" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
+                                </div>
+                                <div class="p-2.5 sm:p-6 space-y-1 sm:space-y-3">
+                                    <h3 class="text-xs sm:text-xl font-bold text-white group-hover:text-amber-400 transition">١٣. بطاطس كرسبي بالبهارات</h3>
+                                    <p class="text-zinc-300 text-[11px] sm:text-sm">طبق بطاطس مقرمشة متبلة بخلطة البهارات الخاصة.</p>
+                                </div>
+                            </div>
+                            <div class="p-2.5 sm:p-6 pt-0 flex flex-col gap-1.5 sm:flex-row sm:items-center sm:justify-between">
+                                <span class="text-xs sm:text-2xl font-black bg-gradient-to-r from-amber-400 to-orange-400 bg-clip-text text-transparent">٥٥ ج.م</span>
+                                <span class="text-xs bg-amber-500/20 text-amber-400 px-3 py-1.5 rounded-xl font-bold">التفاصيل</span>
+                            </div>
+                        </div>
+
+                        <!-- Item 14 -->
+                        <div onclick="openProductModal('أصابع موتزاريلا مقرمشة', 65, '٥ أصابع جبنة موتزاريلا مقلية مع صوص المارينارا.', 'https://images.unsplash.com/photo-1541592106381-b31e9677c0e5?auto=format&fit=crop&w=600&q=80')" class="cursor-pointer menu-item sides bg-zinc-900/60 backdrop-blur-md border border-zinc-800/80 rounded-xl sm:rounded-3xl overflow-hidden hover:border-amber-500/50 transition-all duration-300 flex flex-col justify-between group">
+                            <div>
+                                <div class="h-28 sm:h-52 overflow-hidden relative">
+                                    <img src="https://images.unsplash.com/photo-1541592106381-b31e9677c0e5?auto=format&fit=crop&w=600&q=80" alt="موتزاريلا" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
+                                </div>
+                                <div class="p-2.5 sm:p-6 space-y-1 sm:space-y-3">
+                                    <h3 class="text-xs sm:text-xl font-bold text-white group-hover:text-amber-400 transition">١٤. أصابع موتزاريلا مقرمشة</h3>
+                                    <p class="text-zinc-300 text-[11px] sm:text-sm">٥ أصابع جبنة موتزاريلا مقلية مع صوص المارينارا.</p>
+                                </div>
+                            </div>
+                            <div class="p-2.5 sm:p-6 pt-0 flex flex-col gap-1.5 sm:flex-row sm:items-center sm:justify-between">
+                                <span class="text-xs sm:text-2xl font-black bg-gradient-to-r from-amber-400 to-orange-400 bg-clip-text text-transparent">٦٥ ج.م</span>
+                                <span class="text-xs bg-amber-500/20 text-amber-400 px-3 py-1.5 rounded-xl font-bold">التفاصيل</span>
+                            </div>
+                        </div>
+
+                        <!-- Item 15 -->
+                        <div onclick="openProductModal('حلقات بصل ذهبية', 50, 'حلقات بصل مقرمشة ومذهبة تقدم مع صوص الباربكيو.', 'https://images.unsplash.com/photo-1639024471283-03518883512d?auto=format&fit=crop&w=600&q=80')" class="cursor-pointer menu-item sides bg-zinc-900/60 backdrop-blur-md border border-zinc-800/80 rounded-xl sm:rounded-3xl overflow-hidden hover:border-amber-500/50 transition-all duration-300 flex flex-col justify-between group">
+                            <div>
+                                <div class="h-28 sm:h-52 overflow-hidden relative">
+                                    <img src="https://images.unsplash.com/photo-1639024471283-03518883512d?auto=format&fit=crop&w=600&q=80" alt="بصل" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
+                                </div>
+                                <div class="p-2.5 sm:p-6 space-y-1 sm:space-y-3">
+                                    <h3 class="text-xs sm:text-xl font-bold text-white group-hover:text-amber-400 transition">١٥. حلقات بصل ذهبية</h3>
+                                    <p class="text-zinc-300 text-[11px] sm:text-sm">حلقات بصل مقرمشة ومذهبة تقدم مع صوص الباربكيو.</p>
+                                </div>
+                            </div>
+                            <div class="p-2.5 sm:p-6 pt-0 flex flex-col gap-1.5 sm:flex-row sm:items-center sm:justify-between">
+                                <span class="text-xs sm:text-2xl font-black bg-gradient-to-r from-amber-400 to-orange-400 bg-clip-text text-transparent">٥٠ ج.م</span>
+                                <span class="text-xs bg-amber-500/20 text-amber-400 px-3 py-1.5 rounded-xl font-bold">التفاصيل</span>
+                            </div>
+                        </div>
+
+                        <!-- Item 16 -->
+                        <div onclick="openProductModal('صوص تشيدر ساخن', 25, 'بول صوص جبنة شيدر غني وساخن للغمس.', 'https://images.unsplash.com/photo-1585325701165-351af916e581?auto=format&fit=crop&w=600&q=80')" class="cursor-pointer menu-item sides bg-zinc-900/60 backdrop-blur-md border border-zinc-800/80 rounded-xl sm:rounded-3xl overflow-hidden hover:border-amber-500/50 transition-all duration-300 flex flex-col justify-between group">
+                            <div>
+                                <div class="h-28 sm:h-52 overflow-hidden relative">
+                                    <img src="https://images.unsplash.com/photo-1585325701165-351af916e581?auto=format&fit=crop&w=600&q=80" alt="صوص" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
+                                </div>
+                                <div class="p-2.5 sm:p-6 space-y-1 sm:space-y-3">
+                                    <h3 class="text-xs sm:text-xl font-bold text-white group-hover:text-amber-400 transition">١٦. صوص تشيدر ساخن</h3>
+                                    <p class="text-zinc-300 text-[11px] sm:text-sm">بول صوص جبنة شيدر غني وساخن للغمس.</p>
+                                </div>
+                            </div>
+                            <div class="p-2.5 sm:p-6 pt-0 flex flex-col gap-1.5 sm:flex-row sm:items-center sm:justify-between">
+                                <span class="text-xs sm:text-2xl font-black bg-gradient-to-r from-amber-400 to-orange-400 bg-clip-text text-transparent">٢٥ ج.م</span>
+                                <span class="text-xs bg-amber-500/20 text-amber-400 px-3 py-1.5 rounded-xl font-bold">التفاصيل</span>
+                            </div>
+                        </div>
+
+                        <!-- Item 17 -->
+                        <div onclick="openProductModal('صوص باربكيو مدخن', 20, 'صوص باربكيو أصلي بنكهة الفحم المدخن.', 'https://images.unsplash.com/photo-1472851294608-062f824d29cc?auto=format&fit=crop&w=600&q=80')" class="cursor-pointer menu-item sides bg-zinc-900/60 backdrop-blur-md border border-zinc-800/80 rounded-xl sm:rounded-3xl overflow-hidden hover:border-amber-500/50 transition-all duration-300 flex flex-col justify-between group">
+                            <div>
+                                <div class="h-28 sm:h-52 overflow-hidden relative">
+                                    <img src="https://images.unsplash.com/photo-1472851294608-062f824d29cc?auto=format&fit=crop&w=600&q=80" alt="صوص" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
+                                </div>
+                                <div class="p-2.5 sm:p-6 space-y-1 sm:space-y-3">
+                                    <h3 class="text-xs sm:text-xl font-bold text-white group-hover:text-amber-400 transition">١٧. صوص باربكيو مدخن</h3>
+                                    <p class="text-zinc-300 text-[11px] sm:text-sm">صوص باربكيو أصلي بنكهة الفحم المدخن.</p>
+                                </div>
+                            </div>
+                            <div class="p-2.5 sm:p-6 pt-0 flex flex-col gap-1.5 sm:flex-row sm:items-center sm:justify-between">
+                                <span class="text-xs sm:text-2xl font-black bg-gradient-to-r from-amber-400 to-orange-400 bg-clip-text text-transparent">٢٠ ج.م</span>
+                                <span class="text-xs bg-amber-500/20 text-amber-400 px-3 py-1.5 rounded-xl font-bold">التفاصيل</span>
+                            </div>
+                        </div>
+
+                        <!-- Item 18 -->
+                        <div onclick="openProductModal('صوص كرافت السري', 20, 'الصوص الخاص بالمطعم المكون من خلطة التوابل السرية.', 'https://images.unsplash.com/photo-1551024709-8f23befc6f87?auto=format&fit=crop&w=600&q=80')" class="cursor-pointer menu-item sides bg-zinc-900/60 backdrop-blur-md border border-zinc-800/80 rounded-xl sm:rounded-3xl overflow-hidden hover:border-amber-500/50 transition-all duration-300 flex flex-col justify-between group">
+                            <div>
+                                <div class="h-28 sm:h-52 overflow-hidden relative">
+                                    <img src="https://images.unsplash.com/photo-1551024709-8f23befc6f87?auto=format&fit=crop&w=600&q=80" alt="صوص" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
+                                </div>
+                                <div class="p-2.5 sm:p-6 space-y-1 sm:space-y-3">
+                                    <h3 class="text-xs sm:text-xl font-bold text-white group-hover:text-amber-400 transition">١٨. صوص كرافت السري</h3>
+                                    <p class="text-zinc-300 text-[11px] sm:text-sm">الصوص الخاص بالمطعم المكون من خلطة التوابل السرية.</p>
+                                </div>
+                            </div>
+                            <div class="p-2.5 sm:p-6 pt-0 flex flex-col gap-1.5 sm:flex-row sm:items-center sm:justify-between">
+                                <span class="text-xs sm:text-2xl font-black bg-gradient-to-r from-amber-400 to-orange-400 bg-clip-text text-transparent">٢٠ ج.م</span>
+                                <span class="text-xs bg-amber-500/20 text-amber-400 px-3 py-1.5 rounded-xl font-bold">التفاصيل</span>
+                            </div>
+                        </div>
+
+                        <!-- Item 19 -->
+                        <div onclick="openProductModal('بيبسي كانز بارد', 35, 'مشروب غازي منعش (330 مل).', 'https://images.unsplash.com/photo-1622483767028-3f66f32aef97?auto=format&fit=crop&w=600&q=80')" class="cursor-pointer menu-item sides bg-zinc-900/60 backdrop-blur-md border border-zinc-800/80 rounded-xl sm:rounded-3xl overflow-hidden hover:border-amber-500/50 transition-all duration-300 flex flex-col justify-between group">
+                            <div>
+                                <div class="h-28 sm:h-52 overflow-hidden relative">
+                                    <img src="https://images.unsplash.com/photo-1622483767028-3f66f32aef97?auto=format&fit=crop&w=600&q=80" alt="مشروب" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
+                                </div>
+                                <div class="p-2.5 sm:p-6 space-y-1 sm:space-y-3">
+                                    <h3 class="text-xs sm:text-xl font-bold text-white group-hover:text-amber-400 transition">١٩. بيبسي كانز بارد</h3>
+                                    <p class="text-zinc-300 text-[11px] sm:text-sm">مشروب غازي منعش (330 مل).</p>
+                                </div>
+                            </div>
+                            <div class="p-2.5 sm:p-6 pt-0 flex flex-col gap-1.5 sm:flex-row sm:items-center sm:justify-between">
+                                <span class="text-xs sm:text-2xl font-black bg-gradient-to-r from-amber-400 to-orange-400 bg-clip-text text-transparent">٣٥ ج.م</span>
+                                <span class="text-xs bg-amber-500/20 text-amber-400 px-3 py-1.5 rounded-xl font-bold">التفاصيل</span>
+                            </div>
+                        </div>
+
+                        <!-- Item 20 -->
+                        <div onclick="openProductModal('سفن أب كانز', 35, 'مشروب غازي بنكهة الليمون المنعشة (330 مل).', 'https://images.unsplash.com/photo-1625772299848-391b6a87d7b3?auto=format&fit=crop&w=600&q=80')" class="cursor-pointer menu-item sides bg-zinc-900/60 backdrop-blur-md border border-zinc-800/80 rounded-xl sm:rounded-3xl overflow-hidden hover:border-amber-500/50 transition-all duration-300 flex flex-col justify-between group">
+                            <div>
+                                <div class="h-28 sm:h-52 overflow-hidden relative">
+                                    <img src="https://images.unsplash.com/photo-1625772299848-391b6a87d7b3?auto=format&fit=crop&w=600&q=80" alt="مشروب" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
+                                </div>
+                                <div class="p-2.5 sm:p-6 space-y-1 sm:space-y-3">
+                                    <h3 class="text-xs sm:text-xl font-bold text-white group-hover:text-amber-400 transition">٢٠. سفن أب كانز</h3>
+                                    <p class="text-zinc-300 text-[11px] sm:text-sm">مشروب غازي بنكهة الليمون المنعشة (330 مل).</p>
+                                </div>
+                            </div>
+                            <div class="p-2.5 sm:p-6 pt-0 flex flex-col gap-1.5 sm:flex-row sm:items-center sm:justify-between">
+                                <span class="text-xs sm:text-2xl font-black bg-gradient-to-r from-amber-400 to-orange-400 bg-clip-text text-transparent">٣٥ ج.م</span>
+                                <span class="text-xs bg-amber-500/20 text-amber-400 px-3 py-1.5 rounded-xl font-bold">التفاصيل</span>
+                            </div>
+                        </div>
+
+                        <!-- Item 21 -->
+                        <div onclick="openProductModal('ميلك شيك شوكولاتة', 85, 'ميلك شيك مثلج غني بصوص الشوكولاتة والآيس كريم.', 'https://images.unsplash.com/photo-1572490122747-3968b75cc699?auto=format&fit=crop&w=600&q=80')" class="cursor-pointer menu-item sides bg-zinc-900/60 backdrop-blur-md border border-zinc-800/80 rounded-xl sm:rounded-3xl overflow-hidden hover:border-amber-500/50 transition-all duration-300 flex flex-col justify-between group">
+                            <div>
+                                <div class="h-28 sm:h-52 overflow-hidden relative">
+                                    <img src="https://images.unsplash.com/photo-1572490122747-3968b75cc699?auto=format&fit=crop&w=600&q=80" alt="ميلك شيك" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
+                                </div>
+                                <div class="p-2.5 sm:p-6 space-y-1 sm:space-y-3">
+                                    <h3 class="text-xs sm:text-xl font-bold text-white group-hover:text-amber-400 transition">٢١. ميلك شيك شوكولاتة</h3>
+                                    <p class="text-zinc-300 text-[11px] sm:text-sm">ميلك شيك مثلج غني بصوص الشوكولاتة والآيس كريم.</p>
+                                </div>
+                            </div>
+                            <div class="p-2.5 sm:p-6 pt-0 flex flex-col gap-1.5 sm:flex-row sm:items-center sm:justify-between">
+                                <span class="text-xs sm:text-2xl font-black bg-gradient-to-r from-amber-400 to-orange-400 bg-clip-text text-transparent">٨٥ ج.م</span>
+                                <span class="text-xs bg-amber-500/20 text-amber-400 px-3 py-1.5 rounded-xl font-bold">التفاصيل</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Reviews Section -->
+        <section id="reviews" class="py-12 transition-colors duration-500">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 reveal">
+                <div class="text-center space-y-3 sm:space-y-4 mb-8 sm:mb-12">
+                    <span class="bg-amber-500/20 text-amber-400 px-4 py-2 rounded-full text-xs sm:text-sm font-bold inline-block border border-amber-500/30">أراء عملائنا</span>
+                    <h2 class="text-2xl sm:text-4xl font-black text-white">قالوا عنا إيه؟</h2>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-8">
+                    <div class="bg-zinc-900/60 backdrop-blur-md p-5 sm:p-8 rounded-3xl shadow-xl border border-zinc-800/80 space-y-3">
+                        <div class="flex text-amber-400 gap-1 text-xs sm:text-sm"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                        <p class="text-zinc-300 text-xs sm:text-sm leading-relaxed">"أحلى دابل سماش كلته في حياتي، اللحمة طازة والعيش طري جداً، التوصيل جه ساخن وسريع."</p>
+                        <h4 class="font-bold text-white text-xs sm:text-base">- أحمد محمود</h4>
+                    </div>
+                    <div class="bg-zinc-900/60 backdrop-blur-md p-5 sm:p-8 rounded-3xl shadow-xl border border-zinc-800/80 space-y-3">
+                        <div class="flex text-amber-400 gap-1 text-xs sm:text-sm"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                        <p class="text-zinc-300 text-xs sm:text-sm leading-relaxed">"الصوصات بتاعتهم تحفة والبطاطس اللوديد عظيمة، أنصح بطلب عرض العيلة جداً."</p>
+                        <h4 class="font-bold text-white text-xs sm:text-base">- كريم الشريف</h4>
+                    </div>
+                    <div class="bg-zinc-900/60 backdrop-blur-md p-5 sm:p-8 rounded-3xl shadow-xl border border-zinc-800/80 space-y-3">
+                        <div class="flex text-amber-400 gap-1 text-xs sm:text-sm"><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i><i class="fa-solid fa-star"></i></div>
+                        <p class="text-zinc-300 text-xs sm:text-sm leading-relaxed">"الموقع شكله شيك وسهل جداً في الطلب، والأكل وصل أحسن من الصور بكتير."</p>
+                        <h4 class="font-bold text-white text-xs sm:text-base">- ياسمين خالد</h4>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="relative z-10 bg-zinc-900/40 backdrop-blur-md text-zinc-100 border-t border-zinc-800/80 py-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center space-y-3 sm:space-y-6">
+            <span class="text-2xl font-black tracking-wider bg-gradient-to-r from-amber-400 to-orange-500 bg-clip-text text-transparent">Burger<span class="text-white">Craft</span></span>
+            <p class="text-zinc-400 text-xs sm:text-sm max-w-md mx-auto">نسعى دائماً لتقديم أفضل تجربة برجر أصلية بجودة عالمية ومكونات طازجة.</p>
+            <p class="text-zinc-600 text-[11px] pt-2">© 2026 BurgerCraft. جميع الحقوق محفوظة.</p>
+        </div>
+    </footer>
+
+    <!-- Product Details Modal -->
+    <div id="product-modal" class="fixed inset-0 bg-black/85 backdrop-blur-md z-50 hidden flex items-center justify-center p-4 transition-opacity">
+        <div class="bg-zinc-900 border border-zinc-800 rounded-3xl max-w-lg w-full overflow-hidden shadow-2xl relative text-zinc-100 transform transition-all scale-95 opacity-0 duration-300" id="modal-content">
+            <button onclick="closeProductModal()" class="absolute top-4 left-4 bg-zinc-800/80 hover:bg-zinc-700 text-zinc-300 hover:text-white w-10 h-10 rounded-full flex items-center justify-center transition z-10 cursor-pointer">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+            <div class="h-56 sm:h-64 relative overflow-hidden">
+                <img id="modal-img" src="" alt="الوجبة" class="w-full h-full object-cover">
+                <div class="absolute inset-0 bg-gradient-to-t from-zinc-900 via-transparent to-transparent"></div>
+            </div>
+            <div class="p-6 space-y-4">
+                <div>
+                    <h3 id="modal-title" class="text-2xl font-black text-white">اسم الوجبة</h3>
+                    <p id="modal-desc" class="text-zinc-400 text-sm mt-1">تفاصيل الوجبة...</p>
+                </div>
+                <div class="flex items-center justify-between border-y border-zinc-800 py-3 text-sm">
+                    <span>السعر الأساسي:</span>
+                    <span id="modal-base-price" class="text-xl font-bold text-amber-400">0 ج.م</span>
+                </div>
+                <div class="space-y-2">
+                    <h4 class="font-bold text-sm text-zinc-300">الإضافات الاختيارية:</h4>
+                    <div class="space-y-2 bg-zinc-950/50 p-3 rounded-2xl border border-zinc-800/60 max-h-36 overflow-y-auto">
+                        <label class="flex items-center justify-between text-sm cursor-pointer hover:text-amber-400 transition">
+                            <span class="flex items-center gap-2"><input type="checkbox" name="addon" value="جبنة شيدر إضافية" data-price="25" onchange="calculateModalTotal()" class="accent-amber-500 rounded"> جبنة شيدر إضافية</span>
+                            <span class="text-amber-400 font-bold">+25 ج.م</span>
+                        </label>
+                        <label class="flex items-center justify-between text-sm cursor-pointer hover:text-amber-400 transition">
+                            <span class="flex items-center gap-2"><input type="checkbox" name="addon" value="بيكون مقرمش" data-price="35" onchange="calculateModalTotal()" class="accent-amber-500 rounded"> بيكون مقرمش</span>
+                            <span class="text-amber-400 font-bold">+35 ج.م</span>
+                        </label>
+                        <label class="flex items-center justify-between text-sm cursor-pointer hover:text-amber-400 transition">
+                            <span class="flex items-center gap-2"><input type="checkbox" name="addon" value="صوص كرافت إضافي" data-price="20" onchange="calculateModalTotal()" class="accent-amber-500 rounded"> صوص كرافت إضافي</span>
+                            <span class="text-amber-400 font-bold">+20 ج.م</span>
+                        </label>
+                        <label class="flex items-center justify-between text-sm cursor-pointer hover:text-amber-400 transition">
+                            <span class="flex items-center gap-2"><input type="checkbox" name="addon" value="هالبينو حار" data-price="15" onchange="calculateModalTotal()" class="accent-amber-500 rounded"> هالبينو حار</span>
+                            <span class="text-amber-400 font-bold">+15 ج.م</span>
+                        </label>
+                    </div>
+                </div>
+                <div class="flex items-center justify-between pt-2">
+                    <div>
+                        <span class="text-xs text-zinc-400 block">الإجمالي النهائي</span>
+                        <span id="modal-total-price" class="text-2xl font-black bg-gradient-to-r from-amber-400 to-orange-400 bg-clip-text text-transparent">0 ج.م</span>
+                    </div>
+                    <button onclick="addModalItemToCart()" class="glow-btn bg-gradient-to-r from-amber-500 to-orange-500 text-zinc-950 font-extrabold px-6 py-3 rounded-xl transition shadow-lg shadow-amber-500/20 flex items-center gap-2 cursor-pointer">
+                        <i class="fa-solid fa-cart-plus"></i>
+                        <span>إضافة للسلة</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Checkout Modal -->
+    <div id="checkout-modal" class="fixed inset-0 bg-black/85 backdrop-blur-md z-50 hidden flex items-center justify-center p-4 transition-opacity">
+        <div class="bg-zinc-900 border border-zinc-800 rounded-3xl max-w-lg w-full overflow-hidden shadow-2xl relative text-zinc-100 transform transition-all scale-95 opacity-0 duration-300 max-h-[90vh] overflow-y-auto" id="checkout-modal-content">
+            <button onclick="closeCheckoutModal()" class="absolute top-4 left-4 bg-zinc-800/80 hover:bg-zinc-700 text-zinc-300 hover:text-white w-10 h-10 rounded-full flex items-center justify-center transition z-10 cursor-pointer">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+            <div class="p-6 space-y-5">
+                <div>
+                    <h3 class="text-2xl font-black text-white">إتمام الطلب وبيانات التوصيل</h3>
+                    <p class="text-zinc-400 text-sm mt-1">من فضلك أدخل بياناتك وطريقة الدفع المناسبة.</p>
+                </div>
+
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-xs font-bold text-zinc-300 mb-1">الاسم الكامل</label>
+                        <input type="text" id="checkout-name" placeholder="أدخل اسمك هنا" class="w-full bg-zinc-950/70 border border-zinc-800 rounded-xl px-4 py-3 text-sm text-white focus:border-amber-500 outline-none transition">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-zinc-300 mb-1">رقم الهاتف</label>
+                        <input type="tel" id="checkout-phone" placeholder="010xxxxxxxx" class="w-full bg-zinc-950/70 border border-zinc-800 rounded-xl px-4 py-3 text-sm text-white focus:border-amber-500 outline-none transition">
+                    </div>
+                    <div>
+                        <div class="flex justify-between items-center mb-1">
+                            <label class="block text-xs font-bold text-zinc-300">عنوان التوصيل</label>
+                            <button type="button" onclick="autoDetectLocation()" class="text-xs text-amber-400 hover:text-amber-300 flex items-center gap-1 font-bold cursor-pointer">
+                                <i class="fa-solid fa-location-crosshairs"></i> تحديد موقعي تلقائياً
+                            </button>
+                        </div>
+                        <input type="text" id="checkout-address" placeholder="المدينة، الشارع، رقم الحلة..." class="w-full bg-zinc-950/70 border border-zinc-800 rounded-xl px-4 py-3 text-sm text-white focus:border-amber-500 outline-none transition">
+                    </div>
+
+                    <div>
+                        <label class="block text-xs font-bold text-zinc-300 mb-2">طريقة الدفع</label>
+                        
+                        <div class="space-y-3">
+                            <!-- 1. Cash Option -->
+                            <div onclick="togglePaymentFields('cash')" class="cursor-pointer border border-zinc-800 bg-zinc-950/50 rounded-2xl p-4 flex items-center justify-between hover:border-amber-500 transition">
+                                <div class="flex items-center gap-3">
+                                    <input type="radio" name="payment" value="كاش" id="cash-radio" checked class="accent-amber-500 w-4 h-4 pointer-events-none">
+                                    <i class="fa-solid fa-money-bill-wave text-amber-400 text-xl"></i>
+                                    <div>
+                                        <span class="text-sm font-bold text-white block">كاش</span>
+                                        <span class="text-[11px] text-zinc-400">الدفع عند الاستلام</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 2. Visa Option -->
+                            <div class="border border-zinc-800 bg-zinc-950/50 rounded-2xl p-4 transition cursor-pointer" onclick="togglePaymentFields('visa')">
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center gap-3">
+                                        <input type="radio" name="payment" value="فيزا" id="visa-radio" class="accent-amber-500 w-4 h-4 pointer-events-none">
+                                        <i class="fa-solid fa-credit-card text-amber-400 text-xl"></i>
+                                        <div>
+                                            <span class="text-sm font-bold text-white block">فيزا / بطاقة ائتمان</span>
+                                            <span class="text-[11px] text-zinc-400">الدفع الإلكتروني الآمن</span>
+                                        </div>
+                                    </div>
+                                    <i class="fa-solid fa-chevron-down text-xs text-zinc-500 transition-transform duration-300" id="visa-arrow"></i>
+                                </div>
+                                
+                                <div id="visa-details" class="hidden pt-4 mt-3 border-t border-zinc-800/80 space-y-3" onclick="event.stopPropagation()">
+                                    <div>
+                                        <label class="block text-[11px] text-zinc-400 mb-1">رقم البطاقة</label>
+                                        <input type="text" placeholder="4111 2222 3333 4444" class="w-full bg-zinc-900 border border-zinc-800 rounded-xl px-3 py-2.5 text-xs text-white focus:border-amber-500 outline-none">
+                                    </div>
+                                    <div class="grid grid-cols-2 gap-2">
+                                        <div>
+                                            <label class="block text-[11px] text-zinc-400 mb-1">تاريخ الانتهاء</label>
+                                            <input type="text" placeholder="MM/YY" class="w-full bg-zinc-900 border border-zinc-800 rounded-xl px-3 py-2.5 text-xs text-white focus:border-amber-500 outline-none">
+                                        </div>
+                                        <div>
+                                            <label class="block text-[11px] text-zinc-400 mb-1">رمز الأمان (CVV)</label>
+                                            <input type="password" placeholder="123" maxlength="4" class="w-full bg-zinc-900 border border-zinc-800 rounded-xl px-3 py-2.5 text-xs text-white focus:border-amber-500 outline-none">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- 3. E-Wallet Option -->
+                            <div class="border border-zinc-800 bg-zinc-950/50 rounded-2xl p-4 transition cursor-pointer" onclick="togglePaymentFields('wallet')">
+                                <div class="flex items-center justify-between">
+                                    <div class="flex items-center gap-3">
+                                        <input type="radio" name="payment" value="محفظة إلكترونية" id="wallet-radio" class="accent-amber-500 w-4 h-4 pointer-events-none">
+                                        <i class="fa-solid fa-wallet text-amber-400 text-xl"></i>
+                                        <div>
+                                            <span class="text-sm font-bold text-white block">محفظة إلكترونية</span>
+                                            <span class="text-[11px] text-zinc-400">فودافون كاش، اتصالات، إنستاباي...</span>
+                                        </div>
+                                    </div>
+                                    <i class="fa-solid fa-chevron-down text-xs text-zinc-500 transition-transform duration-300" id="wallet-arrow"></i>
+                                </div>
+
+                                <div id="wallet-details" class="hidden pt-4 mt-3 border-t border-zinc-800/80 space-y-3" onclick="event.stopPropagation()">
+                                    <div>
+                                        <label class="block text-[11px] text-zinc-400 mb-1">رقم هاتف المحفظة</label>
+                                        <input type="tel" placeholder="010xxxxxxxx" class="w-full bg-zinc-900 border border-zinc-800 rounded-xl px-3 py-2.5 text-xs text-white focus:border-amber-500 outline-none">
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+                <div class="border-t border-zinc-800 pt-4 flex items-center justify-between">
+                    <div>
+                        <span class="text-xs text-zinc-400 block">إجمالي السلة</span>
+                        <span id="checkout-total-price" class="text-2xl font-black bg-gradient-to-r from-amber-400 to-orange-400 bg-clip-text text-transparent">0 ج.م</span>
+                    </div>
+                    <button onclick="submitOrder()" class="glow-btn bg-gradient-to-r from-amber-500 to-orange-500 text-zinc-950 font-extrabold px-6 py-3.5 rounded-xl transition shadow-lg shadow-amber-500/20 flex items-center gap-2 cursor-pointer">
+                        <i class="fa-solid fa-check-circle"></i>
+                        <span>تأكيد الطلب الآن</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Order Success Modal (Stunning Confirmation Popup) -->
+    <div id="success-modal" class="fixed inset-0 bg-black/85 backdrop-blur-md z-50 hidden flex items-center justify-center p-4 transition-opacity">
+        <div class="bg-zinc-900 border border-amber-500/40 rounded-3xl max-w-md w-full overflow-hidden shadow-2xl relative text-zinc-100 transform transition-all scale-95 opacity-0 duration-500 text-center p-8 space-y-6" id="success-modal-content">
+            <div class="w-20 h-20 bg-gradient-to-tr from-amber-500 to-orange-500 rounded-full flex items-center justify-center mx-auto shadow-lg shadow-amber-500/40 animate-bounce">
+                <i class="fa-solid fa-check text-zinc-950 text-4xl"></i>
+            </div>
+            
+            <div class="space-y-2">
+                <h3 class="text-2xl font-black text-white">تم تأكيد طلبك بنجاح!</h3>
+                <p class="text-zinc-400 text-sm">شكراً لاختيارك BurgerCraft. يتم تجهيز طلبك الآن بكل حب ❤️</p>
+            </div>
+
+            <div class="bg-zinc-950/60 border border-zinc-800 rounded-2xl p-4 text-right space-y-2 text-xs">
+                <div class="flex justify-between text-zinc-400">
+                    <span>رقم الطلب:</span>
+                    <span class="text-amber-400 font-bold" id="success-order-id">#BC-9842</span>
+                </div>
+                <div class="flex justify-between text-zinc-400">
+                    <span>العميل:</span>
+                    <span class="text-white font-bold" id="success-name">-</span>
+                </div>
+                <div class="flex justify-between text-zinc-400">
+                    <span>طريقة الدفع:</span>
+                    <span class="text-white font-bold" id="success-payment">-</span>
+                </div>
+                <div class="flex justify-between text-zinc-400 pt-2 border-t border-zinc-800">
+                    <span>الإجمالي المدفوع:</span>
+                    <span class="text-amber-400 font-black text-sm" id="success-total">-</span>
+                </div>
+            </div>
+
+            <button onclick="closeSuccessModalAndGoHome()" class="glow-btn w-full bg-gradient-to-r from-amber-500 to-orange-500 text-zinc-950 font-extrabold py-3.5 rounded-xl transition shadow-lg shadow-amber-500/20 cursor-pointer">
+                العودة للرئيسية
+            </button>
+        </div>
+    </div>
+
+    <!-- Toast Notification (With Professional Empty Cart Support) -->
+    <div id="toast" class="fixed bottom-6 right-6 z-50 transform translate-y-32 opacity-0 transition-all duration-300 bg-zinc-900 border border-amber-500/40 text-white px-6 py-4 rounded-2xl shadow-2xl backdrop-blur-md flex items-center gap-3">
+        <div id="toast-icon" class="w-8 h-8 rounded-full bg-amber-500/20 text-amber-400 flex items-center justify-center"><i class="fa-solid fa-check"></i></div>
+        <div>
+            <h5 id="toast-title" class="font-bold text-sm">تم بنجاح</h5>
+            <p id="toast-msg" class="text-zinc-400 text-xs">تمت إضافة الوجبة للسلة</p>
+        </div>
+    </div>
+
+    <!-- Cart Drawer -->
+    <div id="cart-overlay" onclick="toggleCart()" class="fixed inset-0 bg-black/70 backdrop-blur-sm z-50 hidden transition-opacity"></div>
+    <div id="cart-drawer" class="fixed top-0 left-0 bottom-0 w-full max-w-md bg-zinc-900 text-zinc-100 border-r border-zinc-800 z-50 transform -translate-x-full transition-transform duration-300 flex flex-col justify-between p-6 shadow-2xl">
+        <div>
+            <div class="flex items-center justify-between pb-6 border-b border-zinc-800">
+                <h3 class="text-xl font-bold flex items-center gap-2">
+                    <i class="fa-solid fa-cart-shopping text-amber-400"></i>
+                    <span>سلة الطلبات</span>
+                </h3>
+                <button onclick="toggleCart()" class="text-zinc-400 hover:text-white transition cursor-pointer"><i class="fa-solid fa-xmark text-xl"></i></button>
+            </div>
+            <div id="cart-items" class="py-6 space-y-4 overflow-y-auto max-h-[50vh]">
+                <p class="text-zinc-500 text-center py-8">السلة فارغة حالياً</p>
+            </div>
+        </div>
+        <div class="border-t border-zinc-800 pt-6 space-y-4">
+            <div class="flex justify-between text-lg font-bold">
+                <span>المجموع الكلي:</span>
+                <span id="cart-total" class="bg-gradient-to-r from-amber-400 to-orange-400 bg-clip-text text-transparent">٠ ج.م</span>
+            </div>
+            <button onclick="checkout()" class="glow-btn w-full bg-gradient-to-r from-amber-500 to-orange-500 text-zinc-950 font-extrabold py-4 rounded-xl transition text-center shadow-lg shadow-amber-500/20 border border-amber-300 cursor-pointer">
+                إتمام الطلب
+            </button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

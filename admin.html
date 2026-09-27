@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة تحكم الأدمن - Kaza Mix</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-zinc-950 text-zinc-100 min-h-screen p-4 sm:p-8 selection:bg-amber-500 selection:text-zinc-950">
+    
+    <div class="max-w-4xl mx-auto space-y-8">
+        <header class="flex justify-between items-center glass-nav p-6 rounded-3xl border border-white/10 shadow-2xl">
+            <h1 class="text-xl sm:text-2xl font-black text-amber-400 flex items-center gap-2">
+                <i class="fa-solid fa-gauge-high"></i> <span>لوحة تحكم الأدمن - Kaza Mix</span>
+            </h1>
+            <a href="index.html" class="bg-zinc-900 border border-zinc-800 px-4 py-2 rounded-xl text-xs hover:border-amber-500 transition font-bold text-zinc-300">
+                <i class="fa-solid fa-arrow-right ml-1"></i> العودة للموقع
+            </a>
+        </header>
+
+        <!-- Add Menu Item Form -->
+        <div class="glass-nav p-6 sm:p-8 rounded-3xl border border-white/10 shadow-2xl space-y-6">
+            <h2 class="text-lg sm:text-xl font-bold text-amber-400 border-b border-zinc-800 pb-3 flex items-center gap-2">
+                <i class="fa-solid fa-burger"></i> إضافة عنصر جديد للمنيو
+            </h2>
+            <form id="menu-form" onsubmit="addMenuItem(event)" class="space-y-4">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs text-zinc-400 mb-1 font-semibold">اسم الوجبة</label>
+                        <input type="text" id="menu-name" required placeholder="مثال: دابل سماش برجر" class="w-full bg-zinc-900 border border-zinc-800 rounded-xl p-3 text-xs text-white outline-none focus:border-amber-500 transition">
+                    </div>
+                    <div>
+                        <label class="block text-xs text-zinc-400 mb-1 font-semibold">السعر (ج.م)</label>
+                        <input type="number" id="menu-price" required placeholder="150" class="w-full bg-zinc-900 border border-zinc-800 rounded-xl p-3 text-xs text-white outline-none focus:border-amber-500 transition">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-xs text-zinc-400 mb-1 font-semibold">وصف الوجبة</label>
+                    <textarea id="menu-desc" rows="3" required placeholder="قطعتين لحم بقرى، صوص الشيدر الخاص..." class="w-full bg-zinc-900 border border-zinc-800 rounded-xl p-3 text-xs text-white outline-none focus:border-amber-500 transition"></textarea>
+                </div>
+                <div>
+                    <label class="block text-xs text-zinc-400 mb-1 font-semibold">رابط الصورة (URL)</label>
+                    <input type="url" id="menu-img" placeholder="https://images.unsplash.com/..." class="w-full bg-zinc-900 border border-zinc-800 rounded-xl p-3 text-xs text-white outline-none focus:border-amber-500 transition">
+                </div>
+                <button type="submit" class="w-full bg-amber-500 text-zinc-950 font-bold py-3 rounded-xl cursor-pointer hover:bg-amber-400 transition shadow-lg shadow-amber-500/20">
+                    إضافة العنصر للمنيو 🚀
+                </button>
+            </form>
+        </div>
+
+        <!-- Add Offer Form -->
+        <div class="glass-nav p-6 sm:p-8 rounded-3xl border border-white/10 shadow-2xl space-y-6">
+            <h2 class="text-lg sm:text-xl font-bold text-amber-400 border-b border-zinc-800 pb-3 flex items-center gap-2">
+                <i class="fa-solid fa-bolt"></i> إضافة عرض جديد
+            </h2>
+            <form id="offer-form" onsubmit="addOfferItem(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs text-zinc-400 mb-1 font-semibold">عنوان العرض</label>
+                    <input type="text" id="offer-title" required placeholder="مثال: عرض الويك إند الكبير" class="w-full bg-zinc-900 border border-zinc-800 rounded-xl p-3 text-xs text-white outline-none focus:border-amber-500 transition">
+                </div>
+                <div>
+                    <label class="block text-xs text-zinc-400 mb-1 font-semibold">تفاصيل العرض</label>
+                    <textarea id="offer-desc" rows="3" required placeholder="اشتري 2 سندوتش وخد الثالث مجاناً..." class="w-full bg-zinc-900 border border-zinc-800 rounded-xl p-3 text-xs text-white outline-none focus:border-amber-500 transition"></textarea>
+                </div>
+                <button type="submit" class="w-full bg-amber-500 text-zinc-950 font-bold py-3 rounded-xl cursor-pointer hover:bg-amber-400 transition shadow-lg shadow-amber-500/20">
+                    إضافة العرض ⚡
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        async function addMenuItem(e) {
+            e.preventDefault();
+            const item = {
+                name: document.getElementById('menu-name').value,
+                price: document.getElementById('menu-price').value,
+                description: document.getElementById('menu-desc').value,
+                image: document.getElementById('menu-img').value
+            };
+            try {
+                const res = await fetch('/api/menu', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(item)
+                });
+                if(res.ok) {
+                    alert('تمت إضافة العنصر للمنيو بنجاح وحفظه في السيرفر!');
+                    document.getElementById('menu-form').reset();
+                } else {
+                    alert('حدث خطأ أثناء الإضافة');
+                }
+            } catch(err) {
+                console.error(err);
+                alert('تعذر الاتصال بالسيرفر.');
+            }
+        }
+
+        async function addOfferItem(e) {
+            e.preventDefault();
+            const offer = {
+                title: document.getElementById('offer-title').value,
+                description: document.getElementById('offer-desc').value
+            };
+            try {
+                const res = await fetch('/api/offers', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(offer)
+                });
+                if(res.ok) {
+                    alert('تمت إضافة العرض بنجاح وحفظه في السيرفر!');
+                    document.getElementById('offer-form').reset();
+                } else {
+                    alert('حدث خطأ أثناء إضافة العرض');
+                }
+            } catch(err) {
+                console.error(err);
+                alert('تعذر الاتصال بالسيرفر.');
+            }
+        }
+    </script>
+</body>
+</html>
