@@ -5,23 +5,33 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>تسجيل الدخول - Kaza Mix</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;600;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body class="bg-zinc-950 text-zinc-100 min-h-screen flex items-center justify-center relative overflow-hidden selection:bg-amber-500 selection:text-zinc-950">
 
-    <!-- Global Background Video -->
     <div class="fixed inset-0 z-0 overflow-hidden pointer-events-none opacity-40">
         <video autoplay muted loop playsinline class="w-full h-full object-cover"><source src="pr.mp4" type="video/mp4"></video>
         <div class="absolute inset-0 bg-zinc-950/70 backdrop-blur-[2px]"></div>
     </div>
 
-    <!-- Login Box -->
-    <div class="relative z-10 glass-nav border border-white/10 shadow-2xl rounded-3xl max-w-md w-full p-8 space-y-6 mx-4">
+    <div class="relative z-10 glass-nav border border-white/10 shadow-2xl rounded-3xl max-w-md w-full p-8 space-y-5 mx-4">
         <div class="text-center space-y-2">
             <h1 class="text-3xl font-black bg-gradient-to-r from-amber-400 via-amber-500 to-orange-500 bg-clip-text text-transparent">Kaza Mix</h1>
             <p class="text-zinc-400 text-xs">سجل دخولك للوصول إلى عالم البرجر الأصلي</p>
+        </div>
+
+        <button type="button" onclick="continueWithGoogle()" class="w-full flex items-center justify-center gap-3 bg-white text-zinc-900 font-bold py-3 rounded-xl transition hover:bg-zinc-200 text-sm">
+            <i class="fa-brands fa-google text-red-500"></i>
+            تسجيل الدخول بجوجل
+        </button>
+
+        <div class="flex items-center gap-3 text-zinc-500 text-[11px]">
+            <span class="h-px flex-1 bg-zinc-700"></span>
+            <span>أو</span>
+            <span class="h-px flex-1 bg-zinc-700"></span>
         </div>
 
         <form onsubmit="handleLogin(event)" class="space-y-4">
@@ -39,19 +49,121 @@
                 تسجيل الدخول 🚀
             </button>
         </form>
+
+        <p class="text-center text-xs text-zinc-400">
+            ما عندك حساب؟
+            <a href="register.html" class="text-amber-400 font-bold hover:text-amber-300">إنشاء حساب جديد</a>
+        </p>
+
+        <div id="auth-status" class="hidden rounded-xl border border-amber-500/30 bg-amber-500/10 px-3 py-2 text-xs text-amber-200"></div>
     </div>
 
     <script>
+        const GOOGLE_CLIENT_ID = '630733901982-i4j85d059qnqjjn1t7ifpv4jnrjjitc8.apps.googleusercontent.com';
+        const currentPath = window.location.pathname.split('/').filter(Boolean).pop() || 'index.html';
+        const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+
+        if (currentPath !== 'login.html' && isLoggedIn) {
+            window.location.replace('index.html');
+        }
+
+        if (currentPath === 'login.html' && isLoggedIn) {
+            window.location.replace('index.html');
+        }
+
+        function showStatus(message, type = 'info') {
+            const el = document.getElementById('auth-status');
+            if (!el) return;
+            el.textContent = message;
+            el.classList.remove('hidden', 'border-amber-500/30', 'bg-amber-500/10', 'text-amber-200', 'border-red-500/30', 'bg-red-500/10', 'text-red-200', 'border-emerald-500/30', 'bg-emerald-500/10', 'text-emerald-200');
+
+            if (type === 'error') {
+                el.classList.add('border-red-500/30', 'bg-red-500/10', 'text-red-200');
+            } else if (type === 'success') {
+                el.classList.add('border-emerald-500/30', 'bg-emerald-500/10', 'text-emerald-200');
+            } else {
+                el.classList.add('border-amber-500/30', 'bg-amber-500/10', 'text-amber-200');
+            }
+            el.classList.remove('hidden');
+        }
+
         async function handleLogin(e) {
             e.preventDefault();
-            const email = document.getElementById('login-email').value;
-            
-            // تخزين حالة تسجيل الدخول في المتصفح
-            localStorage.setItem('isLoggedIn', 'true');
-            localStorage.setItem('userEmail', email);
+            const email = document.getElementById('login-email').value.trim();
+            const password = document.getElementById('login-password').value.trim();
 
-            // التحويل للصفحة الرئيسية فوراً
-            window.location.href = 'index.html';
+            if (!email || !password) {
+                showStatus('من فضلك أدخل البريد الإلكتروني وكلمة المرور', 'error');
+                return;
+            }
+
+            try {
+                const response = await fetch('/api/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, password })
+                });
+
+                const data = await response.json();
+
+                if (!response.ok || !data.success) {
+                    showStatus(data.message || 'فشل تسجيل الدخول', 'error');
+                    return;
+                }
+
+                localStorage.setItem('isLoggedIn', 'true');
+                localStorage.setItem('userEmail', data.user.email);
+                localStorage.setItem('userName', data.user.name || data.user.email);
+                localStorage.setItem('userRole', data.admin ? 'admin' : 'user');
+                localStorage.setItem('authToken', data.token);
+
+                showStatus('تم تسجيل الدخول بنجاح', 'success');
+                setTimeout(() => window.location.href = data.admin ? 'admin.html' : 'index.html', 600);
+            } catch (error) {
+                console.error(error);
+                showStatus('تعذر الاتصال بالخادم، حاول مرة أخرى', 'error');
+            }
+        }
+
+        async function continueWithGoogle() {
+            if (!window.google || !window.google.accounts) {
+                showStatus('جارٍ تفعيل تسجيل الدخول بجوجل...', 'info');
+                return;
+            }
+
+            showStatus('جارٍ فتح حساب جوجل...', 'info');
+            window.google.accounts.id.initialize({
+                client_id: GOOGLE_CLIENT_ID,
+                callback: async (response) => {
+                    try {
+                        const apiResponse = await fetch('/api/google-login', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ credential: response.credential })
+                        });
+
+                        const data = await apiResponse.json();
+                        if (!apiResponse.ok || !data.success) {
+                            showStatus(data.message || 'فشل تسجيل الدخول بجوجل', 'error');
+                            return;
+                        }
+
+                        localStorage.setItem('isLoggedIn', 'true');
+                        localStorage.setItem('userEmail', data.user.email);
+                        localStorage.setItem('userName', data.user.name || data.user.email);
+                        localStorage.setItem('userRole', data.admin ? 'admin' : 'user');
+                        localStorage.setItem('authToken', data.token);
+
+                        showStatus('تم تسجيل الدخول بجوجل بنجاح', 'success');
+                        setTimeout(() => window.location.href = data.admin ? 'admin.html' : 'index.html', 600);
+                    } catch (error) {
+                        console.error(error);
+                        showStatus('تعذر إكمال تسجيل الدخول بجوجل', 'error');
+                    }
+                }
+            });
+
+            window.google.accounts.id.prompt();
         }
     </script>
 </body>

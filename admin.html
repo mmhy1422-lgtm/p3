@@ -45,10 +45,29 @@
                     <label class="block text-xs text-zinc-400 mb-1 font-semibold">رابط الصورة (URL)</label>
                     <input type="url" id="menu-img" placeholder="https://images.unsplash.com/..." class="w-full bg-zinc-900 border border-zinc-800 rounded-xl p-3 text-xs text-white outline-none focus:border-amber-500 transition">
                 </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs text-zinc-400 mb-1 font-semibold">القسم</label>
+                        <select id="menu-category" class="w-full bg-zinc-900 border border-zinc-800 rounded-xl p-3 text-xs text-white outline-none focus:border-amber-500 transition">
+                            <option value="burger">برجر</option>
+                            <option value="sides">أطباق جانبية ومشروبات</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs text-zinc-400 mb-1 font-semibold">شارة الصنف</label>
+                        <input type="text" id="menu-badge" placeholder="الأكثر مبيعاً" class="w-full bg-zinc-900 border border-zinc-800 rounded-xl p-3 text-xs text-white outline-none focus:border-amber-500 transition">
+                    </div>
+                </div>
                 <button type="submit" class="w-full bg-amber-500 text-zinc-950 font-bold py-3 rounded-xl cursor-pointer hover:bg-amber-400 transition shadow-lg shadow-amber-500/20">
                     إضافة العنصر للمنيو 🚀
                 </button>
             </form>
+            <div>
+                <h3 class="text-sm font-bold text-zinc-200 mb-3">أصناف المنيو الحالية</h3>
+                <div id="admin-menu" class="space-y-3" aria-live="polite">
+                    <p class="text-sm text-zinc-400">جارٍ تحميل المنيو...</p>
+                </div>
+            </div>
         </div>
 
         <!-- Add Offer Form -->
@@ -65,62 +84,314 @@
                     <label class="block text-xs text-zinc-400 mb-1 font-semibold">تفاصيل العرض</label>
                     <textarea id="offer-desc" rows="3" required placeholder="اشتري 2 سندوتش وخد الثالث مجاناً..." class="w-full bg-zinc-900 border border-zinc-800 rounded-xl p-3 text-xs text-white outline-none focus:border-amber-500 transition"></textarea>
                 </div>
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs text-zinc-400 mb-1 font-semibold">السعر (ج.م)</label>
+                        <input type="number" id="offer-price" min="0" step="1" required placeholder="199" class="w-full bg-zinc-900 border border-zinc-800 rounded-xl p-3 text-xs text-white outline-none focus:border-amber-500 transition">
+                    </div>
+                    <div>
+                        <label class="block text-xs text-zinc-400 mb-1 font-semibold">شارة العرض</label>
+                        <input type="text" id="offer-badge" placeholder="الأكثر طلباً" class="w-full bg-zinc-900 border border-zinc-800 rounded-xl p-3 text-xs text-white outline-none focus:border-amber-500 transition">
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-xs text-zinc-400 mb-1 font-semibold">رابط صورة العرض</label>
+                    <input type="url" id="offer-image" placeholder="https://..." class="w-full bg-zinc-900 border border-zinc-800 rounded-xl p-3 text-xs text-white outline-none focus:border-amber-500 transition">
+                </div>
                 <button type="submit" class="w-full bg-amber-500 text-zinc-950 font-bold py-3 rounded-xl cursor-pointer hover:bg-amber-400 transition shadow-lg shadow-amber-500/20">
                     إضافة العرض ⚡
                 </button>
             </form>
+            <div>
+                <h3 class="text-sm font-bold text-zinc-200 mb-3">العروض الحالية</h3>
+                <div id="admin-offers" class="space-y-3" aria-live="polite">
+                    <p class="text-sm text-zinc-400">جارٍ تحميل العروض...</p>
+                </div>
+            </div>
         </div>
+
+        <section class="glass-nav p-6 sm:p-8 rounded-3xl border border-white/10 shadow-2xl space-y-5">
+            <div class="flex items-center justify-between gap-3 border-b border-zinc-800 pb-3">
+                <h2 class="text-lg sm:text-xl font-bold text-amber-400 flex items-center gap-2">
+                    <i class="fa-solid fa-truck-fast"></i> متابعة الطلبات
+                </h2>
+                <button type="button" onclick="loadAdminOrders()" title="تحديث الطلبات" aria-label="تحديث الطلبات" class="rounded-lg border border-zinc-700 px-3 py-2 text-sm text-zinc-300 hover:border-amber-500 hover:text-amber-300">
+                    <i class="fa-solid fa-rotate"></i>
+                </button>
+            </div>
+            <div id="admin-orders" class="space-y-3" aria-live="polite">
+                <p class="text-sm text-zinc-400">جارٍ تحميل الطلبات...</p>
+            </div>
+        </section>
     </div>
 
     <script>
+        const currentPath = window.location.pathname.split('/').filter(Boolean).pop() || 'index.html';
+        const isLoginPage = currentPath === 'login.html';
+        const isLoggedIn = localStorage.getItem('isLoggedIn') === 'true';
+        const isAdmin = localStorage.getItem('userRole') === 'admin' && localStorage.getItem('authToken');
+
+        if (currentPath === 'admin.html' && (!isLoggedIn || !isAdmin)) {
+            window.location.replace('login.html');
+        }
+
+        if (isLoginPage && isLoggedIn) {
+            window.location.replace('index.html');
+        }
+
         async function addMenuItem(e) {
             e.preventDefault();
             const item = {
-                name: document.getElementById('menu-name').value,
-                price: document.getElementById('menu-price').value,
-                description: document.getElementById('menu-desc').value,
-                image: document.getElementById('menu-img').value
+                name: document.getElementById('menu-name').value.trim(),
+                price: Number(document.getElementById('menu-price').value),
+                description: document.getElementById('menu-desc').value.trim(),
+                image: document.getElementById('menu-img').value.trim(),
+                category: document.getElementById('menu-category').value,
+                badge: document.getElementById('menu-badge').value.trim()
             };
             try {
                 const res = await fetch('/api/menu', {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Authorization: `Bearer ${localStorage.getItem('authToken') || ''}`
+                    },
                     body: JSON.stringify(item)
                 });
-                if(res.ok) {
-                    alert('تمت إضافة العنصر للمنيو بنجاح وحفظه في السيرفر!');
-                    document.getElementById('menu-form').reset();
-                } else {
-                    alert('حدث خطأ أثناء الإضافة');
+                const result = await res.json();
+                if (!res.ok || !result.success) throw new Error(result.message || 'تعذر إضافة الصنف');
+                document.getElementById('menu-form').reset();
+                await loadAdminMenu();
+            } catch (error) {
+                alert(error.message || 'تعذر الاتصال بالسيرفر.');
+            }
+        }
+
+        async function loadAdminMenu() {
+            const list = document.getElementById('admin-menu');
+            try {
+                const response = await fetch('/api/menu');
+                if (!response.ok) throw new Error('تعذر تحميل المنيو');
+                const items = await response.json();
+                list.replaceChildren();
+                if (!items.length) {
+                    const empty = document.createElement('p');
+                    empty.className = 'text-sm text-zinc-400';
+                    empty.textContent = 'المنيو فارغ حالياً';
+                    list.appendChild(empty);
+                    return;
                 }
-            } catch(err) {
-                console.error(err);
-                alert('تعذر الاتصال بالسيرفر.');
+
+                items.forEach((item) => {
+                    const row = document.createElement('div');
+                    row.className = 'flex items-center justify-between gap-3 rounded-xl border border-zinc-800 bg-zinc-950/50 p-3';
+                    const details = document.createElement('div');
+                    details.className = 'min-w-0';
+                    const title = document.createElement('p');
+                    title.className = 'font-bold text-sm text-white';
+                    title.textContent = item.name;
+                    const description = document.createElement('p');
+                    description.className = 'mt-1 text-xs text-zinc-400';
+                    description.textContent = `${item.description} · ${item.price} ج.م`;
+                    details.append(title, description);
+                    const deleteButton = document.createElement('button');
+                    deleteButton.type = 'button';
+                    deleteButton.className = 'shrink-0 rounded-lg border border-red-500/30 px-3 py-2 text-xs font-bold text-red-300 hover:bg-red-500/10';
+                    deleteButton.textContent = 'حذف';
+                    deleteButton.addEventListener('click', () => deleteMenuItem(item.id));
+                    row.append(details, deleteButton);
+                    list.appendChild(row);
+                });
+            } catch (error) {
+                list.textContent = error.message || 'تعذر تحميل المنيو';
+            }
+        }
+
+        async function deleteMenuItem(id) {
+            if (!window.confirm('هل تريد حذف هذا الصنف من المنيو؟')) return;
+            try {
+                const response = await fetch(`/api/menu/${encodeURIComponent(id)}`, {
+                    method: 'DELETE',
+                    headers: { Authorization: `Bearer ${localStorage.getItem('authToken') || ''}` }
+                });
+                const result = await response.json();
+                if (!response.ok || !result.success) throw new Error(result.message || 'تعذر حذف الصنف');
+                await loadAdminMenu();
+            } catch (error) {
+                alert(error.message || 'تعذر الاتصال بالسيرفر.');
             }
         }
 
         async function addOfferItem(e) {
             e.preventDefault();
             const offer = {
-                title: document.getElementById('offer-title').value,
-                description: document.getElementById('offer-desc').value
+                title: document.getElementById('offer-title').value.trim(),
+                description: document.getElementById('offer-desc').value.trim(),
+                price: Number(document.getElementById('offer-price').value),
+                badge: document.getElementById('offer-badge').value.trim(),
+                image: document.getElementById('offer-image').value.trim()
             };
             try {
                 const res = await fetch('/api/offers', {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Authorization: `Bearer ${localStorage.getItem('authToken') || ''}`
+                    },
                     body: JSON.stringify(offer)
                 });
-                if(res.ok) {
-                    alert('تمت إضافة العرض بنجاح وحفظه في السيرفر!');
-                    document.getElementById('offer-form').reset();
-                } else {
-                    alert('حدث خطأ أثناء إضافة العرض');
-                }
-            } catch(err) {
-                console.error(err);
-                alert('تعذر الاتصال بالسيرفر.');
+                const result = await res.json();
+                if (!res.ok || !result.success) throw new Error(result.message || 'تعذر إضافة العرض');
+                document.getElementById('offer-form').reset();
+                await loadAdminOffers();
+            } catch (error) {
+                alert(error.message || 'تعذر الاتصال بالسيرفر.');
             }
+        }
+
+        async function loadAdminOffers() {
+            const list = document.getElementById('admin-offers');
+            try {
+                const response = await fetch('/api/offers');
+                if (!response.ok) throw new Error('تعذر تحميل العروض');
+                const offers = await response.json();
+                list.replaceChildren();
+
+                if (!offers.length) {
+                    const empty = document.createElement('p');
+                    empty.className = 'text-sm text-zinc-400';
+                    empty.textContent = 'لا توجد عروض حالياً';
+                    list.appendChild(empty);
+                    return;
+                }
+
+                offers.forEach((offer) => {
+                    const row = document.createElement('div');
+                    row.className = 'flex items-center justify-between gap-3 rounded-xl border border-zinc-800 bg-zinc-950/50 p-3';
+
+                    const details = document.createElement('div');
+                    details.className = 'min-w-0';
+                    const title = document.createElement('p');
+                    title.className = 'font-bold text-sm text-white';
+                    title.textContent = offer.title;
+                    const description = document.createElement('p');
+                    description.className = 'mt-1 text-xs text-zinc-400';
+                    description.textContent = `${offer.description} · ${offer.price} ج.م`;
+                    details.append(title, description);
+
+                    const deleteButton = document.createElement('button');
+                    deleteButton.type = 'button';
+                    deleteButton.className = 'shrink-0 rounded-lg border border-red-500/30 px-3 py-2 text-xs font-bold text-red-300 hover:bg-red-500/10';
+                    deleteButton.textContent = 'حذف';
+                    deleteButton.addEventListener('click', () => deleteOffer(offer.id));
+                    row.append(details, deleteButton);
+                    list.appendChild(row);
+                });
+            } catch (error) {
+                list.textContent = error.message || 'تعذر تحميل العروض';
+            }
+        }
+
+        async function deleteOffer(id) {
+            if (!window.confirm('هل تريد حذف هذا العرض؟')) return;
+            try {
+                const response = await fetch(`/api/offers/${encodeURIComponent(id)}`, {
+                    method: 'DELETE',
+                    headers: { Authorization: `Bearer ${localStorage.getItem('authToken') || ''}` }
+                });
+                const result = await response.json();
+                if (!response.ok || !result.success) throw new Error(result.message || 'تعذر حذف العرض');
+                await loadAdminOffers();
+            } catch (error) {
+                alert(error.message || 'تعذر الاتصال بالسيرفر.');
+            }
+        }
+
+        const orderStatuses = {
+            received: 'تم استلام الطلب',
+            preparing: 'قيد التحضير',
+            ready: 'جاهز للتوصيل',
+            delivered: 'تم التسليم',
+            cancelled: 'ملغي'
+        };
+
+        async function loadAdminOrders() {
+            const list = document.getElementById('admin-orders');
+            try {
+                const response = await fetch('/api/orders', {
+                    headers: { Authorization: `Bearer ${localStorage.getItem('authToken') || ''}` }
+                });
+                const orders = await response.json();
+                if (!response.ok) throw new Error(orders.message || 'تعذر تحميل الطلبات');
+                list.replaceChildren();
+                if (!orders.length) {
+                    const empty = document.createElement('p');
+                    empty.className = 'text-sm text-zinc-400';
+                    empty.textContent = 'لا توجد طلبات حتى الآن';
+                    list.appendChild(empty);
+                    return;
+                }
+
+                orders.slice().reverse().forEach((order) => {
+                    const card = document.createElement('article');
+                    card.className = 'rounded-xl border border-zinc-800 bg-zinc-950/50 p-4 space-y-3';
+                    const heading = document.createElement('div');
+                    heading.className = 'flex flex-wrap items-start justify-between gap-3';
+                    const identity = document.createElement('div');
+                    const title = document.createElement('h3');
+                    title.className = 'font-bold text-white';
+                    title.textContent = `${order.id} · ${order.customer_name}`;
+                    const contact = document.createElement('p');
+                    contact.className = 'text-xs text-zinc-400 mt-1';
+                    contact.textContent = `${order.user_email || 'طلب قديم'} · ${order.phone} · ${order.address}`;
+                    identity.append(title, contact);
+                    const statusSelect = document.createElement('select');
+                    statusSelect.className = 'rounded-lg border border-zinc-700 bg-zinc-900 px-3 py-2 text-xs text-white';
+                    Object.entries(orderStatuses).forEach(([value, label]) => {
+                        const option = document.createElement('option');
+                        option.value = value;
+                        option.textContent = label;
+                        option.selected = (order.status || 'received') === value;
+                        statusSelect.appendChild(option);
+                    });
+                    statusSelect.addEventListener('change', () => updateOrderStatus(order.id, statusSelect.value));
+                    heading.append(identity, statusSelect);
+                    const items = document.createElement('p');
+                    items.className = 'text-xs text-zinc-300';
+                    items.textContent = (order.items || []).map((item) => `${item.name} × ${item.quantity}`).join('، ');
+                    const total = document.createElement('p');
+                    total.className = 'text-sm font-bold text-amber-300';
+                    total.textContent = `${order.total_price} ج.م · ${order.payment_method || 'كاش'}`;
+                    card.append(heading, items, total);
+                    list.appendChild(card);
+                });
+            } catch (error) {
+                list.textContent = error.message || 'تعذر تحميل الطلبات';
+            }
+        }
+
+        async function updateOrderStatus(id, status) {
+            try {
+                const response = await fetch(`/api/orders/${encodeURIComponent(id)}/status`, {
+                    method: 'PATCH',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        Authorization: `Bearer ${localStorage.getItem('authToken') || ''}`
+                    },
+                    body: JSON.stringify({ status })
+                });
+                const result = await response.json();
+                if (!response.ok || !result.success) throw new Error(result.message || 'تعذر تحديث الحالة');
+            } catch (error) {
+                alert(error.message || 'تعذر الاتصال بالسيرفر.');
+                await loadAdminOrders();
+            }
+        }
+
+        if (currentPath === 'admin.html' && isAdmin) {
+            loadAdminMenu();
+            loadAdminOffers();
+            loadAdminOrders();
         }
     </script>
 </body>

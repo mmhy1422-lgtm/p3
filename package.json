@@ -1,6 +1,27 @@
 {
+  "name": "p3",
+  "version": "1.0.0",
+  "description": "",
+  "main": "script.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js",
+    "test": "node --test tests/auth.test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mmhy1422-lgtm/p3.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/mmhy1422-lgtm/p3/issues"
+  },
+  "homepage": "https://github.com/mmhy1422-lgtm/p3#readme",
   "dependencies": {
-    "cors": "^2.8.6",
-    "express": "^5.2.1"
+    "express": "^5.3.0",
+    "google-auth-library": "^9.15.1"
   }
 }
