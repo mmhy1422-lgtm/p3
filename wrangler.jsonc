@@ -1,0 +1,28 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "kaza-mix",
+  "main": "src/worker.js",
+  "compatibility_date": "2026-10-16",
+  "workers_dev": true,
+  "assets": {
+    "directory": "./public",
+    "binding": "ASSETS",
+    "run_worker_first": true,
+    "html_handling": "none",
+    "not_found_handling": "none"
+  },
+  "d1_databases": [
+    {
+      "binding": "DB",
+      "database_name": "kaza-mix-db",
+      "migrations_dir": "migrations"
+    }
+  ],
+  "vars": {
+    "ADMIN_EMAIL": "admin@burgercraft.com",
+    "GOOGLE_CLIENT_ID": "630733901982-i4j85d059qnqjjn1t7ifpv4jnrjjitc8.apps.googleusercontent.com"
+  },
+  "secrets": {
+    "required": ["ADMIN_PASSWORD"]
+  }
+}

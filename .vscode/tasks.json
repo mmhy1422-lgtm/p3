@@ -1,0 +1,50 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"label": "Run BurgerCraft Server",
+			"type": "shell",
+			"command": "node server.js",
+			"args": [],
+			"isBackground": true,
+			"problemMatcher": [],
+			"group": "build"
+		},
+		{
+			"label": "Verify auth endpoints",
+			"type": "shell",
+			"command": "powershell -NoProfile -Command \"$body1 = '{\\\"name\\\":\\\"Test User\\\",\\\"email\\\":\\\"verifyuser@example.com\\\",\\\"password\\\":\\\"Pass123!\\\"}'; $r1 = Invoke-RestMethod -Uri 'http://localhost:3000/api/register' -Method Post -ContentType 'application/json' -Body $body1; $body2 = '{\\\"email\\\":\\\"verifyuser@example.com\\\",\\\"password\\\":\\\"Pass123!\\\"}'; $r2 = Invoke-RestMethod -Uri 'http://localhost:3000/api/login' -Method Post -ContentType 'application/json' -Body $body2; $r1 | ConvertTo-Json -Depth 10; $r2 | ConvertTo-Json -Depth 10\"",
+			"args": [],
+			"isBackground": false,
+			"problemMatcher": [],
+			"group": "test"
+		},
+		{
+			"label": "Check port 3000",
+			"type": "shell",
+			"command": "powershell -NoProfile -Command \"Get-NetTCPConnection -LocalPort 3000 -ErrorAction SilentlyContinue | Format-Table -AutoSize\"",
+			"args": [],
+			"isBackground": false,
+			"problemMatcher": [],
+			"group": "debug"
+		},
+		{
+			"label": "List Node processes",
+			"type": "shell",
+			"command": "powershell -NoProfile -Command \"Get-CimInstance Win32_Process | Where-Object { $_.Name -match 'node' -or $_.Name -match 'chrome' } | Select-Object ProcessId, Name, CommandLine | Format-Table -AutoSize\"",
+			"args": [],
+			"isBackground": false,
+			"problemMatcher": [],
+			"group": "debug"
+		},
+		{
+			"label": "Run BurgerCraft Server on 3001",
+			"type": "shell",
+			"command": "powershell -NoProfile -Command \"$env:PORT='3001'; node server.js\"",
+			"args": [],
+			"isBackground": true,
+			"problemMatcher": [],
+			"group": "build"
+		}
+	]
+}
